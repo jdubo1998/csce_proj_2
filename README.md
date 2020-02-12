@@ -1,1 +1,1 @@
-# csce_proj_2
+# Sports Management Database Project
