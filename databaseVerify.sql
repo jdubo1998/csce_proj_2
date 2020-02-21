@@ -1,0 +1,2 @@
+--This file can be run to verify the data of the database.
+--The database this file is made for is team2_904_cfb.
