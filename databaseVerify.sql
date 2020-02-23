@@ -59,7 +59,6 @@ GROUP BY player."first name", player."last name"
 ORDER BY sum(rush.yards) DESC
 LIMIT 1;
 
-
 --who had zero out of bound punts in a year
 SELECT sum(punt."out of bounds"), player."first name", player."last name"
 FROM punt
