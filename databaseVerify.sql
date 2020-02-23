@@ -1,26 +1,6 @@
 --This file can be run to verify the data of the database.
 --The database this file is made for is team2_904_cfb.
 
---show amount of rows in each table
-SELECT count(*) AS Rows FROM conference;
-SELECT count(*) AS Rows FROM drive;
-SELECT count(*) AS Rows FROM game;
-SELECT count(*) AS Rows FROM game_statistics;
-SELECT count(*) AS Rows FROM kickoff;
-SELECT count(*) AS Rows FROM kickoff_return;
-SELECT count(*) AS Rows FROM pass;
-SELECT count(*) AS Rows FROM play;
-SELECT count(*) AS Rows FROM player;
-SELECT count(*) AS Rows FROM player_game_statistics;
-SELECT count(*) AS Rows FROM punt;
-SELECT count(*) AS Rows FROM punt_return;
-SELECT count(*) AS Rows FROM reception;
-SELECT count(*) AS Rows FROM rush;
-SELECT count(*) AS Rows FROM stadium;
-SELECT count(*) AS Rows FROM team;
-SELECT count(*) AS Rows FROM team_game_statistics;
-SELECT count(*) AS Rows FROM reception;
-
 --average height and weight of all players in a year
 SELECT 
     avg(height) AS "Average Height",
@@ -79,11 +59,3 @@ FROM stadium
 WHERE season = 2013
 GROUP BY state
 ORDER BY count(stadium) DESC LIMIT 1;
-
---which team made the most sacks in a year
-SELECT sum(team_game_statistics.sack), team."name"
-FROM team_game_statistics
-INNER JOIN team ON team_game_statistics."team code"=team."team code"
-WHERE team_game_statistics.season = 2007
-GROUP BY team."name"
-ORDER BY sum(team_game_statistics.sack) DESC LIMIT 1;
