@@ -56,8 +56,7 @@ SELECT sum(rush.yards), player."first name", player."last name"
 FROM rush
 INNER JOIN player ON rush."player code"=player."player code"
 GROUP BY player."first name", player."last name"
-ORDER BY sum(rush.yards) DESC
-LIMIT 1;
+ORDER BY sum(rush.yards) DESC LIMIT 1;
 
 --who had zero out of bound punts in a year
 SELECT sum(punt."out of bounds"), player."first name", player."last name"
@@ -68,7 +67,23 @@ GROUP BY player."first name", player."last name"
 HAVING sum(punt."out of bounds") = 0;
 
 --which team made the most kickoff return touchdowns
+SELECT sum(kickoff_return.touchdown), team."name"
+FROM kickoff_return
+INNER JOIN team ON kickoff_return."team code"=team."team code"
+GROUP BY team."name"
+ORDER BY sum(kickoff_return.touchdown) DESC LIMIT 1;
 
 --which state has the most stadiums in a year
+SELECT count(stadium), state
+FROM stadium
+WHERE season = 2013
+GROUP BY state
+ORDER BY count(stadium) DESC LIMIT 1;
 
 --which team made the most sacks in a year
+SELECT sum(team_game_statistics.sack), team."name"
+FROM team_game_statistics
+INNER JOIN team ON team_game_statistics."team code"=team."team code"
+WHERE team_game_statistics.season = 2007
+GROUP BY team."name"
+ORDER BY sum(team_game_statistics.sack) DESC LIMIT 1;
