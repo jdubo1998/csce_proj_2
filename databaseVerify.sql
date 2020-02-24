@@ -67,3 +67,87 @@ INNER JOIN team as visit ON game."visit team code"=visit."team code" AND game."s
 WHERE ((home.name = 'Texas A&M' AND visit.name = 'Texas')
 OR (home.name = 'Texas' AND visit.name = 'Texas A&M'))
 AND game.season=2010;
+
+--bring up the game match up and scores during the 2013 season
+SELECT 
+    game.”date”, game."season", 
+    t1."name" AS "home team", 
+    t2."name" AS "visiting team", 
+    tgs1."points" AS "home team score", 
+    tgs2."points" AS "visiting team score" 
+FROM game 
+INNER JOIN team AS t1 ON t1."team code"=game."home team code"
+INNER JOIN team AS t2 ON t2."team code"=game."visit team code"
+INNER JOIN team_game_statistics AS tgs1 ON tgs1."game code"=game."game code" 
+    AND tgs1."team code"=game."home team code" 
+INNER JOIN team_game_statistics AS tgs2 ON tgs2."game code"=game."game code" 
+    AND tgs2."team code"=game."visit team code"
+    WHERE game."season"=2013 
+      AND t1."season"=2013
+      AND t2."season"=2013 
+ORDER BY game.”date” LIMIT 5;
+
+--longest run in a given season
+select MAX(rush.yards) AS "Longest Run"
+FROM rush WHERE rush.season=2008;
+
+--who had the most receiving yards in a given season
+select sum(reception.yards), player."first name", player."last name"
+FROM reception
+JOIN player ON reception."player code"=player."player code"
+WHERE reception.season = 2012
+GROUP BY player."first name", player."last name" 
+ORDER by sum(reception.yards) DESC LIMIT 1;
+
+--who threw the most interceptions in their college career
+select sum(pass.interception) AS "Total INTs", player."first name", player."last name" 
+FROM pass
+JOIN player on pass."passer player code"=player."player code"
+GROUP BY player."first name", player."last name"
+ORDER BY sum(pass.yards) DESC LIMIT 1;
+
+--Top 5 QBs of 2013 who threw the most TDs
+SELECT player_game_statistics."pass td", player."first name", player."last name", player."season"
+FROM player_game_statistics
+JOIN player ON player_game_statistics."player code"=player."player code"
+WHERE player.season=2013
+GROUP BY player_game_statistics."pass td", player."first name", player."last name", player."season"
+ORDER BY player_game_statistics."pass td" DESC LIMIT 5;
+
+--highest scorring game of 2008
+SELECT game.date, max(play."offense points"+play."defense points") AS "Total Score"
+FROM play
+INNER JOIN game ON play."game code"=game."game code"
+WHERE play.season = 2008
+GROUP BY game.date
+ORDER BY max(play."offense points"+play."defense points") DESC LIMIT 1;
+
+--conference with the most teams in 2011
+SELECT count(team."team code"), team."conference code", conference."name"
+FROM team
+JOIN conference ON team."conference code"=conference."conference code"
+WHERE team.season = 2011 and conference.season = 2011
+GROUP BY team."conference code", conference."name"
+ORDER BY count(team."team code") DESC LIMIT 1;
+
+--most yards passing
+select sum(player_game_statistics."pass yard") AS "Total Passing Yards", player."first name", player."last name"
+FROM player_game_statistics
+JOIN player ON player_game_statistics."player code"=player."player code"
+GROUP BY player."first name", player."last name"
+ORDER BY "Total Passing Yards" DESC LIMIT 1;
+
+--who has the most sacks
+select sum(player_game_statistics.sack) AS "Total Sacks", player."first name", player."last name"
+FROM player_game_statistics
+JOIN player on player_game_statistics."player code"=player."player code"
+WHERE player."first name" = 'Bruce' AND player."last name" = 'Miller'
+GROUP BY player."first name", player."last name";
+
+--most fumbles in a game
+SELECT team_game_statistics.fumble, team.name, team_game_statistics.season
+FROM team_game_statistics
+JOIN team ON team_game_statistics."team code"=team."team code"
+WHERE team_game_statistics.season=2013
+GROUP BY team_game_statistics.fumble, team.name, team_game_statistics.season
+ORDER BY team_game_statistics.fumble DESC LIMIT 1;
