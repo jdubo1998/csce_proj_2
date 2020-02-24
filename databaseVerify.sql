@@ -59,3 +59,11 @@ FROM stadium
 WHERE season = 2013
 GROUP BY state
 ORDER BY count(stadium) DESC LIMIT 1;
+
+--did tamu ever play ut in 2010
+SELECT * FROM game
+INNER JOIN team as home ON game."home team code"=home."team code" AND game."season"=home."season"
+INNER JOIN team as visit ON game."visit team code"=visit."team code" AND game."season"=visit."season"
+WHERE ((home.name = 'Texas A&M' AND visit.name = 'Texas')
+OR (home.name = 'Texas' AND visit.name = 'Texas A&M'))
+AND game.season=2010;
