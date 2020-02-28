@@ -70,7 +70,7 @@ AND game.season=2010;
 
 --bring up the game match up and scores during the 2013 season
 SELECT 
-    game.”date”, game."season", 
+    game."date", game."season", 
     t1."name" AS "home team", 
     t2."name" AS "visiting team", 
     tgs1."points" AS "home team score", 
