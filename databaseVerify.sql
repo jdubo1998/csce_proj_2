@@ -85,7 +85,7 @@ INNER JOIN team_game_statistics AS tgs2 ON tgs2."game code"=game."game code"
 WHERE game."season"=2013 
     AND t1."season"=2013
     AND t2."season"=2013 
-ORDER BY game.”date” LIMIT 5;
+ORDER BY game."date" LIMIT 5;
 
 --longest run in a given season
 select MAX(rush.yards) AS "Longest Run"
