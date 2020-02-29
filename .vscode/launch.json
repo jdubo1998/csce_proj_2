@@ -14,7 +14,7 @@
             "type": "java",
             "name": "Debug (Launch)-GUI<csce_proj_2_e916b9f3>",
             "request": "launch",
-            "mainClass": "GUI",
+            "mainClass": "dbGui",
             "projectName": "csce_proj_2_e916b9f3"
         },
         {
