@@ -14,9 +14,9 @@ public class dbConnectTest {
         dbConnect conn = new dbConnect(user, pswd);
 
         //set up a query to use and what columns to use
-        String query = "SELECT * FROM CONFERENCE WHERE SEASON = 2009";
         String[] columns = {"name", "season"};
-
+        String query = conn.makeQuery("conference", columns, 2009);
+        
         //send the query to the database
         String[] data = conn.sendQuery(query, columns);
 

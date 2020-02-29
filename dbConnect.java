@@ -34,6 +34,10 @@ public class dbConnect {
     String[] sendQuery(String query, String[] columns) {
         String[] data = new String[columns.length];
 
+        for (int i = 0; i < data.length; i++) {
+            data[i] = "";
+        }
+
         try {
             Statement stmt = conn.createStatement();
             ResultSet result = stmt.executeQuery(query);
@@ -47,5 +51,30 @@ public class dbConnect {
         }
 
         return data;
+    }
+
+    //Give the table, array of columns, and season to make a query
+    String makeQuery(String table, String[] columns, int season) {
+        String query = "SELECT ";
+
+        for(int i = 0; i < columns.length; i++) {
+            if (i == columns.length-1) {
+                query += columns[i] + " ";
+            }
+            else {
+                query += columns[i] + ", ";
+            }
+        }
+
+        query += "FROM " + table;
+
+        if (season > 0) {
+            query += " WHERE season = " + season + ";";
+        }
+        else {
+            query += ";";
+        }
+
+        return query;
     }
 }
