@@ -55,20 +55,33 @@ public class dbConnect {
     }
 
     //Give the table, array of columns, and season to make a query
-    String makeQuery(String table, String[] columns, int season) {
+    String makeQuery(String[] tables, String[] columns, String joinBy, int season) {
+        //start the query
         String query = "SELECT ";
 
-        for(int i = 0; i < columns.length; i++) {
-            if (i == columns.length-1) {
-                query += "\"" + columns[i] + "\" ";
-            }
-            else {
-                query += "\"" + columns[i] + "\", ";
+        //add all the columns to use
+        for (int i = 0; i < tables.length; i++) {
+            for(int j = 0; j < columns.length; j++) {
+                if (i == (tables.length-1) && j == (columns.length-1)) {
+                    query +=  tables[i] + "." + "\"" + columns[j] + "\" ";
+                }
+                else {
+                    query += tables[i] + "." + "\"" + columns[j] + "\", ";
+                }
             }
         }
 
-        query += "FROM " + table;
+        //start adding tables
+        query += "FROM " + tables[0];
 
+        if(tables.length > 1) {
+            for(int i = 1; i < tables.length; i++) {
+                query += "JOIN " + tables[i] + " ON " + tables[0] + "." + "\"" + joinBy + "\"=" + tables[i] + "." + "\"" + joinBy + "\"";
+            }
+        }
+
+
+        //add the season
         if (season > 0) {
             query += " WHERE season = " + season + ";";
         }
