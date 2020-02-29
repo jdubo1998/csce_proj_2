@@ -14,9 +14,9 @@ public class dbConnectTest {
         dbConnect conn = new dbConnect(user, pswd);
 
         //set up a query to use and what columns to use
-        String[] columns = {"name", "season"};
+        String[] columns = {"conference code", "name", "season"};
         String query = conn.makeQuery("conference", columns, 2009);
-        
+
         //send the query to the database
         String[] data = conn.sendQuery(query, columns);
 
@@ -25,14 +25,14 @@ public class dbConnectTest {
         String[] season = data[1].split("\n");
 
         //print all of the cconference names
-        System.out.println("Conferene names: ");
+        System.out.println("Conferene codes: ");
         for (int i = 0; i < names.length; i++) {
             System.out.print(names[i]+" ");
         }
         System.out.println();
 
         //print all of the conference seasons
-        System.out.println("Conference season: ");
+        System.out.println("Conference name: ");
         for (int i = 0; i < season.length; i++) {
             System.out.print(season[i] + " ");
         }

@@ -60,10 +60,10 @@ public class dbConnect {
 
         for(int i = 0; i < columns.length; i++) {
             if (i == columns.length-1) {
-                query += columns[i] + " ";
+                query += "\"" + columns[i] + "\" ";
             }
             else {
-                query += columns[i] + ", ";
+                query += "\"" + columns[i] + "\", ";
             }
         }
 
