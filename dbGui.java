@@ -10,6 +10,17 @@
  */
 public class dbGui extends javax.swing.JFrame {
 
+    //Useful arrays and strings
+    String[] tables;
+    String[] columns;
+    String joinBy;
+    String query;
+    int season;
+
+    //Username and Password holders
+    String username;
+    String password;
+
     /**
      * Creates new form dbGui
      */
