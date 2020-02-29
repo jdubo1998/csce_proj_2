@@ -299,6 +299,10 @@ public class dbGui extends javax.swing.JFrame {
 
     private void SubmitButtonActionPerformed(java.awt.event.ActionEvent evt) {                                             
         // TODO add your handling code here:
+        username = UsernameTextField.getText();
+        password = String.copyValueOf(PasswordTextField.getPassword());
+        System.out.println(username);
+        System.out.println(password);
     }                                            
 
     private void Column1ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {                                                
