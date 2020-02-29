@@ -1,0 +1,301 @@
+       table_name       |      column_name      
+------------------------+-----------------------
+ conference             | conference code
+ conference             | subdivision
+ conference             | name
+ conference             | season
+ drive                  | start period
+ drive                  | team code
+ drive                  | time of possession
+ drive                  | yards
+ drive                  | plays
+ drive                  | end reason
+ drive                  | end spot
+ drive                  | end clock
+ drive                  | drive number
+ drive                  | end period
+ drive                  | start reason
+ drive                  | start spot
+ drive                  | start clock
+ drive                  | game code
+ drive                  | season
+ drive                  | red zone attempt
+ game                   | game code
+ game                   | stadium code
+ game                   | home team code
+ game                   | visit team code
+ game                   | date
+ game                   | season
+ game                   | site
+ game_statistics        | game code
+ game_statistics        | duration
+ game_statistics        | season
+ game_statistics        | attendance
+ kickoff                | attempt
+ kickoff                | row number
+ kickoff                | season
+ kickoff                | onside success
+ kickoff                | onside
+ kickoff                | out of bounds
+ kickoff                | downed
+ kickoff                | touchback
+ kickoff                | fair catch
+ kickoff                | yards
+ kickoff                | player code
+ kickoff                | team code
+ kickoff                | play number
+ kickoff                | game code
+ kickoff_return         | fair catch
+ kickoff_return         | row number
+ kickoff_return         | game code
+ kickoff_return         | season
+ kickoff_return         | team code
+ kickoff_return         | player code
+ kickoff_return         | play number
+ kickoff_return         | attempt
+ kickoff_return         | safety
+ kickoff_return         | fumble lost
+ kickoff_return         | yards
+ kickoff_return         | fumble
+ kickoff_return         | touchdown
+ pass                   | game code
+ pass                   | row number
+ pass                   | team code
+ pass                   | passer player code
+ pass                   | receiver player code
+ pass                   | attempt
+ pass                   | completion
+ pass                   | yards
+ pass                   | touchdown
+ pass                   | interception
+ pass                   | 1st down
+ pass                   | dropped
+ pass                   | season
+ pass                   | play number
+ play                   | clock
+ play                   | defense team code
+ play                   | offense points
+ play                   | defense points
+ play                   | row number
+ play                   | play type
+ play                   | down
+ play                   | period number
+ play                   | distance
+ play                   | spot
+ play                   | drive number
+ play                   | play number
+ play                   | game code
+ play                   | drive play
+ play                   | season
+ play                   | offense team code
+ player                 | weight
+ player                 | player code
+ player                 | team code
+ player                 | last name
+ player                 | first name
+ player                 | class
+ player                 | position
+ player                 | height
+ player                 | home town
+ player                 | home state
+ player                 | home country
+ player                 | last school
+ player                 | season
+ player                 | uniform number
+ player_game_statistics | tackle assist
+ player_game_statistics | tackle solo
+ player_game_statistics | pass int
+ player_game_statistics | pass td
+ player_game_statistics | pass yard
+ player_game_statistics | pass comp
+ player_game_statistics | pass att
+ player_game_statistics | rush td
+ player_game_statistics | rush yard
+ player_game_statistics | rush att
+ player_game_statistics | game code
+ player_game_statistics | tackle for loss yard
+ player_game_statistics | points
+ player_game_statistics | safety
+ player_game_statistics | def 2xp made
+ player_game_statistics | def 2xp att
+ player_game_statistics | off 2xp att
+ player_game_statistics | off xp kick made
+ player_game_statistics | off xp kick att
+ player_game_statistics | field goal made
+ player_game_statistics | field goal att
+ player_game_statistics | misc ret td
+ player_game_statistics | misc ret yard
+ player_game_statistics | misc ret
+ player_game_statistics | int ret td
+ player_game_statistics | int ret yard
+ player_game_statistics | int ret
+ player_game_statistics | fum ret td
+ player_game_statistics | fum ret yard
+ player_game_statistics | sack
+ player_game_statistics | sack yard
+ player_game_statistics | qb hurry
+ player_game_statistics | fum ret
+ player_game_statistics | punt ret td
+ player_game_statistics | punt ret yard
+ player_game_statistics | punt ret
+ player_game_statistics | kickoff ret td
+ player_game_statistics | kickoff ret yard
+ player_game_statistics | kickoff ret
+ player_game_statistics | rec td
+ player_game_statistics | rec yards
+ player_game_statistics | rec
+ player_game_statistics | off 2xp made
+ player_game_statistics | fumble forced
+ player_game_statistics | pass broken up
+ player_game_statistics | kick punt blocked
+ player_game_statistics | player code
+ player_game_statistics | season
+ player_game_statistics | row number
+ player_game_statistics | pass conv
+ player_game_statistics | tackle for loss
+ player_game_statistics | fumble lost
+ player_game_statistics | fumble
+ player_game_statistics | kickoff onside
+ player_game_statistics | kickoff out of bounds
+ player_game_statistics | kickoff touchback
+ player_game_statistics | kickoff yard
+ player_game_statistics | kickoff
+ player_game_statistics | punt yard
+ player_game_statistics | punt
+ punt                   | row number
+ punt                   | game code
+ punt                   | play number
+ punt                   | team code
+ punt                   | player code
+ punt                   | attempt
+ punt                   | yards
+ punt                   | blocked
+ punt                   | fair catch
+ punt                   | touchback
+ punt                   | downed
+ punt                   | out of bounds
+ punt                   | season
+ punt_return            | row number
+ punt_return            | game code
+ punt_return            | play number
+ punt_return            | team code
+ punt_return            | player code
+ punt_return            | attempt
+ punt_return            | yards
+ punt_return            | touchdown
+ punt_return            | fumble
+ punt_return            | fumble lost
+ punt_return            | safety
+ punt_return            | fair catch
+ punt_return            | season
+ reception              | game code
+ reception              | play number
+ reception              | team code
+ reception              | player code
+ reception              | reception
+ reception              | yards
+ reception              | touchdown
+ reception              | 1st down
+ reception              | fumble
+ reception              | fumble lost
+ reception              | safety
+ reception              | season
+ reception              | row number
+ rush                   | fumble
+ rush                   | game code
+ rush                   | play number
+ rush                   | team code
+ rush                   | player code
+ rush                   | attempt
+ rush                   | yards
+ rush                   | touchdown
+ rush                   | 1st down
+ rush                   | sack
+ rush                   | fumble lost
+ rush                   | safety
+ rush                   | season
+ rush                   | row number
+ stadium                | state
+ stadium                | name
+ stadium                | stadium code
+ stadium                | year opened
+ stadium                | surface
+ stadium                | capacity
+ stadium                | city
+ stadium                | season
+ team                   | team code
+ team                   | name
+ team                   | season
+ team                   | conference code
+ team_game_statistics   | kickoff ret td
+ team_game_statistics   | punt reg
+ team_game_statistics   | punt ret yard
+ team_game_statistics   | game code
+ team_game_statistics   | rush att
+ team_game_statistics   | rush yard
+ team_game_statistics   | int ret
+ team_game_statistics   | third down att
+ team_game_statistics   | red zone field goal
+ team_game_statistics   | season
+ team_game_statistics   | red zone td
+ team_game_statistics   | red zone att
+ team_game_statistics   | fourth down conv
+ team_game_statistics   | int ret yard
+ team_game_statistics   | fourth down att
+ team_game_statistics   | third down conv
+ team_game_statistics   | sack
+ team_game_statistics   | row number
+ team_game_statistics   | int ret td
+ team_game_statistics   | misc ret
+ team_game_statistics   | misc ret yard
+ team_game_statistics   | misc ret td
+ team_game_statistics   | field goal att
+ team_game_statistics   | field goal made
+ team_game_statistics   | off xp kick att
+ team_game_statistics   | off xp kick made
+ team_game_statistics   | off 2xp kick att
+ team_game_statistics   | off 2xp kick made
+ team_game_statistics   | def 2xp att
+ team_game_statistics   | def 2xp made
+ team_game_statistics   | safety
+ team_game_statistics   | points
+ team_game_statistics   | punt
+ team_game_statistics   | punt yard
+ team_game_statistics   | kickoff
+ team_game_statistics   | kickoff yard
+ team_game_statistics   | kickoff touchback
+ team_game_statistics   | kickoff out-of-bounds
+ team_game_statistics   | kickoff onside
+ team_game_statistics   | fum ret yard
+ team_game_statistics   | fumble
+ team_game_statistics   | fumble lost
+ team_game_statistics   | tackle solo
+ team_game_statistics   | tackle assist
+ team_game_statistics   | tackle for loss
+ team_game_statistics   | tackle for loss yard
+ team_game_statistics   | sack yard
+ team_game_statistics   | qb hurry
+ team_game_statistics   | fumble forced
+ team_game_statistics   | pass broken up
+ team_game_statistics   | kick/punt blocked
+ team_game_statistics   | 1st down rush
+ team_game_statistics   | 1st down pass
+ team_game_statistics   | 1st down penalty
+ team_game_statistics   | time of possession
+ team_game_statistics   | penalty
+ team_game_statistics   | penalty yard
+ team_game_statistics   | pass conb
+ team_game_statistics   | punt ret td
+ team_game_statistics   | team code
+ team_game_statistics   | rush td
+ team_game_statistics   | pas att
+ team_game_statistics   | pass comp
+ team_game_statistics   | pass yard
+ team_game_statistics   | pass td
+ team_game_statistics   | pass int
+ team_game_statistics   | kickoff ret
+ team_game_statistics   | kickoff ret yard
+ team_game_statistics   | fum ret
+ team_game_statistics   | fum ret td
+(297 rows)
+

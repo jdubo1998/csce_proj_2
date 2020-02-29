@@ -4,6 +4,7 @@ import java.sql.*;
 William Fairleigh - based off of jdbcpostgreSQL.java written by Robert Lightfoot
 CSCE 315
 2/28/2020 - Original
+2/29/2020 - Add makeQuery
 */
 
 public class dbConnect {
