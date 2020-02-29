@@ -1,3 +1,5 @@
+import javax.swing.text.StyledDocument;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -301,8 +303,42 @@ public class dbGui extends javax.swing.JFrame {
         // TODO add your handling code here:
         username = UsernameTextField.getText();
         password = String.copyValueOf(PasswordTextField.getPassword());
-        System.out.println(username);
-        System.out.println(password);
+        // set up a dbConnect object to talk to the database
+        dbConnect conn = new dbConnect(username, password);
+
+        // set up a query to use and what columns to use
+        columns = new String[]{ "conference code", "name" };
+        tables = new String[]{ "conference" };
+        query = conn.makeQuery(tables, columns, "none", 2009);
+
+        // send the query to the database
+        String[] data = conn.sendQuery(query, columns);
+
+        // split the data into a more usable format
+        String[][] splitData = new String[columns.length][];
+
+        for(int i = 0; i < columns.length; i++) {
+            splitData[i] = data[i].split("\n");
+        }
+
+        DatabaseOutput.setText("");
+        StyledDocument doc = DatabaseOutput.getStyledDocument();
+
+        try {
+            doc.insertString(0, "Table: " + tables[0] + "\n", null);
+
+            for(int i = 0; i < columns.length; i++) {
+                doc.insertString(doc.getLength(), columns[i] + "\t", null);
+            }
+            doc.insertString(doc.getLength(), "\n", null);
+
+            for (int i = 0; i < splitData[0].length; i++) {
+                for(int j = 0; j < splitData.length; j++) {
+                    doc.insertString(doc.getLength(), splitData[j][i] + "\t", null);
+                }
+                doc.insertString(doc.getLength(), "\n", null);
+            }
+        } catch(Exception e) { System.out.println(e); }
     }                                            
 
     private void Column1ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {                                                
