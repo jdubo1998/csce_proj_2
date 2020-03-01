@@ -1,3 +1,6 @@
+import java.awt.Image;
+import javax.swing.ImageIcon;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -25,7 +28,6 @@ public class dbGui extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
-
         jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
         jCheckBoxMenuItem2 = new javax.swing.JCheckBoxMenuItem();
         jCheckBoxMenuItem3 = new javax.swing.JCheckBoxMenuItem();
@@ -35,7 +37,7 @@ public class dbGui extends javax.swing.JFrame {
         PasswordTextField = new javax.swing.JPasswordField();
         UsernameLabel = new javax.swing.JLabel();
         PasswordLabel = new javax.swing.JLabel();
-        Column1ComboBox = new javax.swing.JComboBox<>();
+        Column1ComboBox = new JCheckComboBox();
         TableLabel = new javax.swing.JLabel();
         ColumnLabel = new javax.swing.JLabel();
         Season1ComboBox = new javax.swing.JComboBox<>();
@@ -46,7 +48,7 @@ public class dbGui extends javax.swing.JFrame {
         FileCheckBox = new javax.swing.JCheckBox();
         SubmitButton = new javax.swing.JButton();
         TeamNameLabel = new javax.swing.JLabel();
-        Column2ComboBox = new javax.swing.JComboBox<>();
+        Column2ComboBox = new JCheckComboBox();
         Season2ComboBox = new javax.swing.JComboBox<>();
         Table2ComboBox = new javax.swing.JComboBox<>();
         JoinLabel = new javax.swing.JLabel();
@@ -64,6 +66,8 @@ public class dbGui extends javax.swing.JFrame {
 
         jCheckBoxMenuItem4.setSelected(true);
         jCheckBoxMenuItem4.setText("jCheckBoxMenuItem4");
+        
+        ImageIcon Logo = new ImageIcon("resources\\teamlogo.png");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -92,9 +96,18 @@ public class dbGui extends javax.swing.JFrame {
         PasswordLabel.setText("Password");
 
         Column1ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "conference code", "subdivision", "name", "season" }));
+        Column1ComboBox.setCheckedSize();
         Column1ComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Column1ComboBoxActionPerformed(evt);
+            }
+        });
+
+        Column2ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "conference code", "subdivision", "name", "season" }));
+        Column2ComboBox.setCheckedSize();
+        Column2ComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Column2ComboBoxActionPerformed(evt);
             }
         });
 
@@ -114,8 +127,6 @@ public class dbGui extends javax.swing.JFrame {
         DatabaseOutput.setEditable(false);
         jScrollPane1.setViewportView(DatabaseOutput);
 
-        LogoLabel.setText("LOGO");
-
         FileCheckBox.setText("File");
         FileCheckBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -131,13 +142,6 @@ public class dbGui extends javax.swing.JFrame {
         });
 
         TeamNameLabel.setText("Team2_904_cfb");
-
-        Column2ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "conference code", "subdivision", "name", "season" }));
-        Column2ComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Column2ComboBoxActionPerformed(evt);
-            }
-        });
 
         Season2ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013" }));
         Season2ComboBox.addActionListener(new java.awt.event.ActionListener() {
@@ -155,6 +159,7 @@ public class dbGui extends javax.swing.JFrame {
         });
 
         JoinLabel.setText("Join by:");
+        LogoLabel.setIcon(new ImageIcon(Logo.getImage().getScaledInstance(163, 163, Image.SCALE_SMOOTH)));
 
         EnableJoin1CheckBox.setText(" ");
         EnableJoin1CheckBox.addActionListener(new java.awt.event.ActionListener() {
@@ -290,8 +295,8 @@ public class dbGui extends javax.swing.JFrame {
         // TODO add your handling code here:
     }                                            
 
-    private void Column1ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {                                                
-        // TODO add your handling code here:
+    private void Column1ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {
+        Column1ComboBox.setChecked(Column1ComboBox.getSelectedIndex());
     }                                               
 
     private void Season1ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {                                                
@@ -299,7 +304,7 @@ public class dbGui extends javax.swing.JFrame {
     }                                               
 
     private void Column2ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {                                                
-        // TODO add your handling code here:
+        Column2ComboBox.setChecked(Column2ComboBox.getSelectedIndex());
     }                                               
 
     private void Season2ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {                                                
@@ -350,8 +355,8 @@ public class dbGui extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify                     
-    private javax.swing.JComboBox<String> Column1ComboBox;
-    private javax.swing.JComboBox<String> Column2ComboBox;
+    private JCheckComboBox Column1ComboBox;
+    private JCheckComboBox Column2ComboBox;
     private javax.swing.JLabel ColumnLabel;
     private javax.swing.JTextPane DatabaseOutput;
     private javax.swing.JCheckBox EnableJoin1CheckBox;
