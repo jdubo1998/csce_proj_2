@@ -1,4 +1,7 @@
 import javax.swing.text.StyledDocument;
+import java.io.File; // Import the File class
+import java.io.FileWriter;
+import java.io.IOException; // Import the IOException class to handle errors
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -312,8 +315,6 @@ public class dbGui extends javax.swing.JFrame {
         tables[1] = "team";
         query = conn.makeQuery(tables, columns, "conference code", 2, 2009);
 
-        System.out.println(query);
-
         // send the query to the database
         String[] data = conn.sendQuery(query, columns);
 
@@ -324,6 +325,28 @@ public class dbGui extends javax.swing.JFrame {
             splitData[i] = data[i].split("\n");
         }
 
+        if (FileCheckBox.isSelected()) {
+            try {
+                File out = new File("output.txt");
+                FileWriter outWrite = new FileWriter("output.txt");
+
+                outWrite.write("Table: " + tables[0] + "\n");
+
+                for (int i = 0; i < columns.length; i++) {
+                    outWrite.write(columns[i] + "\t");
+                }
+                outWrite.write("\n");
+
+                for (int i = 0; i < splitData[0].length; i++) {
+                    for (int j = 0; j < splitData.length; j++) {
+                        outWrite.write(splitData[j][i] + "\t");
+                    }
+                    outWrite.write("\n");
+                }
+
+                outWrite.close();
+            } catch (IOException e) { System.out.println(e); }
+        }
         DatabaseOutput.setText("");
         StyledDocument doc = DatabaseOutput.getStyledDocument();
 
