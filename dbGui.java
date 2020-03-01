@@ -5,6 +5,9 @@ import java.io.IOException; // Import the IOException class to handle errors
 import java.util.Formatter;
 import java.util.Locale;
 import java.lang.StringBuilder;
+import javax.swing.ComboBoxModel;
+import javax.swing.JComboBox;
+import java.io.*;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -25,9 +28,62 @@ public class dbGui extends javax.swing.JFrame {
     String query;
     int season;
 
-    //Username and Password holders
+    // Username and Password holders
     String username;
     String password;
+    String[] conferenceColumns = { "conference code", "subdivision", "name", "season" };
+    String[] driveColumns = { "game code", "drive number", "team code", "start period", "start clock", "start spot",
+            "start reason", "end period", "end clock", "end spot", "end reason", "plays", "yards", "time of possession",
+            "red zone attempt", "season" };
+    String[] gameColumns = { "game code", "date", "visit team code", "home team code", "stadium code", "site",
+            "season" };
+    String[] game_statisticsColumns = { "game code", "attendance", "duration", "season" };
+    String[] kickoffColumns = { "game code", "play number", "team code", "player code", "attempt", "yards",
+            "fair catch", "touchback", "downed", "out of bounds", "onside", "onside success", "season", "row number" };
+    String[] kickoff_returnColumns = { "game code", "play number", "team code", "player code", "attempt", "yards",
+            "touchdown", "fumble", "fumble lost", "safety", "fair catch", "season", "row number" };
+    String[] passColumns = { "game code", "play number", "team code", "passer player code", "receiver player code",
+            "attempt", "completion", "yards", "touchdown", "interception", "1st down", "dropped", "season",
+            "row number" };
+    String[] playColumns = { "game code", "play number", "period number", "clock", "offense team code",
+            "defense team code", "offense points", "defense points", "down", "distance", "spot", "play type",
+            "drive number", "drive play", "season", "row number" };
+    String[] playerColumns = { "player code", "team code", "last name", "first name", "uniform number", "class",
+            "position", "height", "weight", "home town", "home state", "home country", "last school", "season" };
+    String[] player_game_statisticsColumns = { "player code", "game code", "rush att", "rush yard", "rush td",
+            "pass att", "pass comp", "pass yard", "pass td", "pass int", "pass conv", "rec", "rec yards", "rec td",
+            "kickoff ret", "kickoff ret yard", "kickoff ret td", "punt ret", "punt ret yard", "punt ret td", "fum ret",
+            "fum ret yard", "fum ret td", "int ret", "int ret yard", "int ret td", "misc ret", "misc ret yard",
+            "misc ret td", "field goal att", "field goal made", "off xp kick att", "off xp kick made", "off 2xp att",
+            "off 2xp made", "def 2xp att", "def 2xp made", "safety", "points", "punt", "punt yard", "kickoff",
+            "kickoff yard", "kickoff touchback", "kickoff out of bounds", "kickoff onside", "fumble", "fumble lost",
+            "tackle solo", "tackle assist", "tackle for loss", "tackle for loss yard", "sack", "sack yard", "qb hurry",
+            "fumble forced", "pass broken up", "kick punt blocked", "season", "row number" };
+    String[] puntColumns = { "game code", "play number", "team code", "player code", "attempt", "yards", "blocked",
+            "fair catch", "touchback", "downed", "out of bounds", "season", "row number" };
+    String[] punt_returnColumns = { "game code", "play number", "team code", "player code", "attempt", "yards",
+            "touchdown", "fumble", "fumble lost", "safety", "fair catch", "season", "row number" };
+    String[] receptionColumns = { "game code", "play number", "team code", "player code", "reception", "yards",
+            "touchdown", "1st down", "fumble", "fumble lost", "safety", "season", "row number" };
+    String[] rushColumns = { "game code", "play number", "team code", "player code", "attempt", "yards", "touchdown",
+            "1st down", "sack", "fumble", "fumble lost", "safety", "season", "row number" };
+    String[] stadiumColumns = { "stadium code", "name", "city", "state", "capacity",
+            "surface",
+            "year opened", "season" };
+    String[] teamColumns = {"team code", "name", "conference code", "season"};
+    String[] team_game_statisticsColumns = {"team code", "game code", "rush att", "rush yard", "rush td", "pas att", "pass comp",
+             "pass yard", "pass td", "pass int", "pass conb", "kickoff ret", "kickoff ret yard", "kickoff ret td", "punt reg", "punt ret yard",
+             "punt ret td", "fum ret", "fum ret yard", "fum ret td", "int ret", "int ret yard", "int ret td", "misc ret", "misc ret yard",
+             "misc ret td", "field goal att", "field goal made", "off xp kick att", "off xp kick made", "off 2xp kick att", "off 2xp kick made",
+             "def 2xp att", "def 2xp made", "safety", "points", "punt", "punt yard", "kickoff", "kickoff yard", "kickoff touchback", "kickoff out-of-bounds",
+             "kickoff onside", "fumble", "fumble lost", "tackle solo", "tackle assist", "tackle for loss", "tackle for loss yard", "sack", "sack yard", 
+             "qb hurry", "fumble forced", "pass broken up", "kick/punt blocked", "1st down rush", "1st down pass", "1st down penalty", "time of possession",
+             "penalty", "penalty yard", "third down att", "third down conv", "fourth down att", "fourth down conv", "red zone att", "red zone td", "red zone field goal",
+             "season", "row number"};
+
+
+
+
 
     /**
      * Creates new form dbGui
@@ -42,7 +98,7 @@ public class dbGui extends javax.swing.JFrame {
      * regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">
     private void initComponents() {
 
         jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
@@ -86,11 +142,14 @@ public class dbGui extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        Table1ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "conference" }));
+        Table1ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "conference", "drive", "game", "game_statistics", "kickoff",
+                                                                                     "kickoff_return", "pass", "play", "player", "player_game_statistics",
+                                                                                      "punt", "punt_return", "reception", "rush", "stadium", "team",
+                                                                                       "team_game_statistics" }));
         Table1ComboBox.setToolTipText("");
         Table1ComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Table1ComboBoxActionPerformed(evt);
+                    Table1ComboBoxActionPerformed(evt);
             }
         });
 
@@ -110,7 +169,7 @@ public class dbGui extends javax.swing.JFrame {
 
         PasswordLabel.setText("Password");
 
-        Column1ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "conference code", "subdivision", "name", "season" }));
+        Column1ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { }));
         Column1ComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Column1ComboBoxActionPerformed(evt);
@@ -151,7 +210,7 @@ public class dbGui extends javax.swing.JFrame {
 
         TeamNameLabel.setText("Team2_904_cfb");
 
-        Column2ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "conference code", "subdivision", "name", "season" }));
+        Column2ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {  }));
         Column2ComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Column2ComboBoxActionPerformed(evt);
@@ -165,7 +224,10 @@ public class dbGui extends javax.swing.JFrame {
             }
         });
 
-        Table2ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "conference" }));
+        Table2ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "conference", "drive", "game", "game_statistics", "kickoff",
+                                                                                    "kickoff_return", "pass", "play", "player", "player_game_statistics",
+                                                                                    "punt", "punt_return", "reception", "rush", "stadium", "team",
+                                                                                    "team_game_statistics" }));
         Table2ComboBox.setToolTipText("");
         Table2ComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -289,9 +351,61 @@ public class dbGui extends javax.swing.JFrame {
         pack();
     }// </editor-fold>                        
 
-    private void Table1ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {                                               
+    private void Table1ComboBoxActionPerformed(java.awt.event.ActionEvent evt)  {
         // TODO add your handling code here:
-    }                                              
+        if ("conference".equals(Table1ComboBox.getSelectedItem())){
+            Column1ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(conferenceColumns));
+        } 
+        else if ("drive".equals(Table1ComboBox.getSelectedItem())){
+            Column1ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(driveColumns));
+        } 
+        else if ("game".equals(Table1ComboBox.getSelectedItem())){
+            Column1ComboBox.setModel( new javax.swing.DefaultComboBoxModel<>(gameColumns));
+        } 
+        else if ("game_statistics".equals(Table1ComboBox.getSelectedItem())){
+            Column1ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(game_statisticsColumns));
+        } 
+        else if ("kickoff".equals(Table1ComboBox.getSelectedItem())){
+            Column1ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(kickoffColumns));
+        } 
+        else if ("kickoff_return".equals(Table1ComboBox.getSelectedItem())){
+            Column1ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(kickoff_returnColumns));
+        } 
+        else if ("pass".equals(Table1ComboBox.getSelectedItem())){
+            Column1ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(passColumns));
+        } 
+        else if ("play".equals(Table1ComboBox.getSelectedItem())){
+            Column1ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(playColumns));
+        } 
+        else if ("player".equals(Table1ComboBox.getSelectedItem())){
+            Column1ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(playerColumns));
+        } 
+        else if ("player_game_statistics".equals(Table1ComboBox.getSelectedItem())){
+            Column1ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(player_game_statisticsColumns));
+        } 
+        else if ("punt".equals(Table1ComboBox.getSelectedItem())){
+            Column1ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(puntColumns));
+        } 
+        else if ("punt_return".equals(Table1ComboBox.getSelectedItem())){
+            Column1ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(punt_returnColumns));
+        } 
+        else if ("reception".equals(Table1ComboBox.getSelectedItem())){
+            Column1ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(receptionColumns));
+        } 
+        else if ("rush".equals(Table1ComboBox.getSelectedItem())){
+            Column1ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(rushColumns));
+        } 
+        else if ("stadium".equals(Table1ComboBox.getSelectedItem())){
+            Column1ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(stadiumColumns));
+        } 
+        else if ("team".equals(Table1ComboBox.getSelectedItem())){
+            Column1ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(teamColumns));
+        }
+        else {
+            Column1ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(team_game_statisticsColumns));
+        }
+    }
+                                              
 
     private void PasswordTextFieldActionPerformed(java.awt.event.ActionEvent evt) {                                                  
         // TODO add your handling code here:
@@ -396,6 +510,58 @@ public class dbGui extends javax.swing.JFrame {
 
     private void Table2ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {                                               
         // TODO add your handling code here:
+        if ("conference".equals(Table2ComboBox.getSelectedItem())){
+            Column2ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(conferenceColumns));
+        } 
+        else if ("drive".equals(Table2ComboBox.getSelectedItem())){
+            Column2ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(driveColumns));
+        } 
+        else if ("game".equals(Table2ComboBox.getSelectedItem())){
+            Column2ComboBox.setModel( new javax.swing.DefaultComboBoxModel<>(gameColumns));
+        } 
+        else if ("game_statistics".equals(Table2ComboBox.getSelectedItem())){
+            Column2ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(game_statisticsColumns));
+        } 
+        else if ("kickoff".equals(Table2ComboBox.getSelectedItem())){
+            Column2ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(kickoffColumns));
+        } 
+        else if ("kickoff_return".equals(Table2ComboBox.getSelectedItem())){
+            Column2ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(kickoff_returnColumns));
+        } 
+        else if ("pass".equals(Table2ComboBox.getSelectedItem())){
+            Column2ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(passColumns));
+        } 
+        else if ("play".equals(Table2ComboBox.getSelectedItem())){
+            Column2ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(playColumns));
+        } 
+        else if ("player".equals(Table2ComboBox.getSelectedItem())){
+            Column2ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(playerColumns));
+        } 
+        else if ("player_game_statistics".equals(Table2ComboBox.getSelectedItem())){
+            Column2ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(player_game_statisticsColumns));
+        } 
+        else if ("punt".equals(Table2ComboBox.getSelectedItem())){
+            Column2ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(puntColumns));
+        } 
+        else if ("punt_return".equals(Table2ComboBox.getSelectedItem())){
+            Column2ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(punt_returnColumns));
+        } 
+        else if ("reception".equals(Table2ComboBox.getSelectedItem())){
+            Column2ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(receptionColumns));
+        } 
+        else if ("rush".equals(Table2ComboBox.getSelectedItem())){
+            Column2ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(rushColumns));
+        } 
+        else if ("stadium".equals(Table2ComboBox.getSelectedItem())){
+            Column2ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(stadiumColumns));
+        } 
+        else if ("team".equals(Table2ComboBox.getSelectedItem())){
+            Column2ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(teamColumns));
+        }
+        else {
+            Column2ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(team_game_statisticsColumns));
+        }
+
     }                                              
 
     private void EnableJoin1CheckBoxActionPerformed(java.awt.event.ActionEvent evt) {                                                    
