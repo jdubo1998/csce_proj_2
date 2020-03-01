@@ -443,7 +443,7 @@ public class dbGui extends javax.swing.JFrame {
         }
 
         //find largets string
-        int[] maxlengths = new int[splitData[0].length];
+        int[] maxlengths = new int[columns.length];
 
         for (int i = 0; i < columns.length; i++) {
             maxlengths[i] = columns[i].length();
@@ -451,8 +451,12 @@ public class dbGui extends javax.swing.JFrame {
 
         for(int i = 0; i < splitData.length; i++) {
             for (int j = 0; j < splitData[i].length; j++){
-                maxlengths[j] = Math.max(splitData[i][j].length(), maxlengths[j]);
+                maxlengths[i] = Math.max(splitData[i][j].length(), maxlengths[i]);
             }
+        }
+
+        for(int i = 0; i < maxlengths.length; i++) {
+            System.out.println(maxlengths[i]);
         }
 
         //Start formatting the output in an even way
@@ -461,13 +465,13 @@ public class dbGui extends javax.swing.JFrame {
 
         formated.format("Table 1:%20s\tTable2:%20s\n", tables[0], tables[1]);
         for(int i = 0; i < columns.length; i++) {
-            formated.format("%-" + maxlengths[i] + "s|%5s", columns[i], " ");
+            formated.format("%-" + maxlengths[i] + "s%5s|%5s", columns[i], " ", " ");
         }
         formated.format("\n");
 
         for (int i = 0; i < splitData[0].length; i++) {
-            for (int j = 0; j < splitData.length; j++) {
-                formated.format("%-" + maxlengths[i] + "s|%5s", splitData[j][i], " ");
+            for (int j = 0; j < columns.length; j++) {
+                formated.format("%-" + maxlengths[j] + "s%5s|%5s", splitData[j][i], " ", " ");
             }
             formated.format("\n");
         }
