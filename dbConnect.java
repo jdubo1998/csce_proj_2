@@ -44,7 +44,7 @@ public class dbConnect {
             ResultSet result = stmt.executeQuery(query);
             while (result.next()) {
                 for (int i = 0; i < columns.length; i++) {              
-                    data[i] += result.getString(columns[i]) + "\n";
+                    data[i] += result.getString(i+1) + "\n";
                 }
             }
         } catch (Exception e) {
@@ -55,37 +55,39 @@ public class dbConnect {
     }
 
     //Give the table, array of columns, and season to make a query
-    String makeQuery(String[] tables, String[] columns, String joinBy, int season) {
+    String makeQuery(String[] tables, String[] columns, String joinBy, int firstColumns, int season) {
         //start the query
         String query = "SELECT ";
 
         //add all the columns to use
-        for (int i = 0; i < tables.length; i++) {
-            for(int j = 0; j < columns.length; j++) {
-                if (i == (tables.length-1) && j == (columns.length-1)) {
-                    query +=  tables[i] + "." + "\"" + columns[j] + "\" ";
-                }
-                else {
-                    query += tables[i] + "." + "\"" + columns[j] + "\", ";
-                }
+        int i = 0;
+        for(i = 0; i < columns.length - 1; i++) {
+            if (i < firstColumns) {
+                query +=  tables[0] + "." + "\"" + columns[i] + "\", ";
+            } else {
+                query += tables[1] + "." + "\"" + columns[i] + "\", ";
             }
         }
+        if (i < firstColumns) {
+            query +=  tables[0] + "." + "\"" + columns[i] + "\" ";
+        } else {
+            query +=  tables[1] + "." + "\"" + columns[i] + "\" ";
+        }
 
-        //start adding tables
+        // start adding tables
         query += "FROM " + tables[0];
 
         if(tables.length > 1) {
-            for(int i = 1; i < tables.length; i++) {
-                query += "JOIN " + tables[i] + " ON " + tables[0] + "." + "\"" + joinBy + "\"=" + tables[i] + "." + "\"" + joinBy + "\"";
+            for(i = 1; i < tables.length; i++) {
+                query += " JOIN " + tables[i] + " ON " + tables[0] + "." + "\"" + joinBy + "\"=" + tables[i] + "." + "\"" + joinBy + "\"";
             }
         }
 
 
         //add the season
         if (season > 0) {
-            query += " WHERE season = " + season + ";";
-        }
-        else {
+            query += " WHERE " + tables[0] + ".season = " + season + " AND " + tables[1] + ".season = " + season + ";";
+        } else {
             query += ";";
         }
 

@@ -13,7 +13,7 @@ import javax.swing.text.StyledDocument;
 public class dbGui extends javax.swing.JFrame {
 
     //Useful arrays and strings
-    String[] tables;
+    String[] tables = new String[2];
     String[] columns;
     String joinBy;
     String query;
@@ -307,9 +307,12 @@ public class dbGui extends javax.swing.JFrame {
         dbConnect conn = new dbConnect(username, password);
 
         // set up a query to use and what columns to use
-        columns = new String[]{ "conference code", "name" };
-        tables = new String[]{ "conference" };
-        query = conn.makeQuery(tables, columns, "none", 2009);
+        columns = new String[]{ "conference code", "name", "name" };
+        tables[0] = "conference";
+        tables[1] = "team";
+        query = conn.makeQuery(tables, columns, "conference code", 2, 2009);
+
+        System.out.println(query);
 
         // send the query to the database
         String[] data = conn.sendQuery(query, columns);
