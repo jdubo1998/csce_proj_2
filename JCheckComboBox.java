@@ -66,8 +66,30 @@ public class JCheckComboBox extends JComboBox {
         crenderer.setChecked(index);
     }
 
-    boolean getChecked(int index) {
-        return crenderer.getChecked(index);
+    String[] getChecked() {
+        String checked[] = new String[this.numChecked()];
+        int index = 0;
+
+        for (int i = 0; i < this.getItemCount(); i++) {
+            if (crenderer.getChecked(i)) {
+                checked[index] = (String) this.getItemAt(i);
+                index++;
+            }
+        }
+
+        return checked;
+    }
+
+    int numChecked() {
+        int count = 0;
+
+        for (int i = 0; i < this.getItemCount(); i++) {
+            if (crenderer.getChecked(i)) {
+                count++;
+            }
+        }
+
+        return count;
     }
 }
 
