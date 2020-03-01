@@ -177,8 +177,7 @@ public class dbGui extends javax.swing.JFrame {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Column1ComboBoxActionPerformed(evt);
             }
-        });
-        Column1ComboBox.setCheckedSize();        
+        });      
 
         TableLabel.setText("Table");
 
@@ -218,7 +217,6 @@ public class dbGui extends javax.swing.JFrame {
                 Column2ComboBoxActionPerformed(evt);
             }
         });
-        Column2ComboBox.setCheckedSize();
 
         Season2ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013" }));
         Season2ComboBox.addActionListener(new java.awt.event.ActionListener() {
@@ -408,6 +406,8 @@ public class dbGui extends javax.swing.JFrame {
         else {
             Column1ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(team_game_statisticsColumns));
         }
+
+        Column1ComboBox.setCheckedSize();
     }
                                               
 
@@ -570,6 +570,7 @@ public class dbGui extends javax.swing.JFrame {
             Column2ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(team_game_statisticsColumns));
         }
 
+        Column2ComboBox.setCheckedSize();
     }                                              
 
     private void EnableJoin1CheckBoxActionPerformed(java.awt.event.ActionEvent evt) {                                                    
