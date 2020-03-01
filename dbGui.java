@@ -2,6 +2,9 @@ import javax.swing.text.StyledDocument;
 import java.io.File; // Import the File class
 import java.io.FileWriter;
 import java.io.IOException; // Import the IOException class to handle errors
+import java.util.Formatter;
+import java.util.Locale;
+import java.lang.StringBuilder;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -313,7 +316,7 @@ public class dbGui extends javax.swing.JFrame {
         columns = new String[]{ "conference code", "name", "name" };
         tables[0] = "conference";
         tables[1] = "team";
-        query = conn.makeQuery(tables, columns, "conference code", 2, 2009);
+        query = conn.makeQuery(tables, columns, "conference code", 2, Season1ComboBox.getSelectedItem().toString());
 
         // send the query to the database
         String[] data = conn.sendQuery(query, columns);
@@ -325,24 +328,44 @@ public class dbGui extends javax.swing.JFrame {
             splitData[i] = data[i].split("\n");
         }
 
+        //find largets string
+        int[] maxlengths = new int[splitData[0].length];
+
+        for (int i = 0; i < columns.length; i++) {
+            maxlengths[i] = columns[i].length();
+        }
+
+        for(int i = 0; i < splitData.length; i++) {
+            for (int j = 0; j < splitData[i].length; j++){
+                maxlengths[j] = Math.max(splitData[i][j].length(), maxlengths[j]);
+            }
+        }
+
+        //Start formatting the output in an even way
+        StringBuilder output = new StringBuilder();
+        Formatter formated = new Formatter(output, Locale.US);
+
+        formated.format("Table 1:%20s\tTable2:%20s\n", tables[0], tables[1]);
+        for(int i = 0; i < columns.length; i++) {
+            formated.format("%-" + maxlengths[i] + "s|%5s", columns[i], " ");
+        }
+        formated.format("\n");
+
+        for (int i = 0; i < splitData[0].length; i++) {
+            for (int j = 0; j < splitData.length; j++) {
+                formated.format("%-" + maxlengths[i] + "s|%5s", splitData[j][i], " ");
+            }
+            formated.format("\n");
+        }
+
+        formated.close();
+        //end formating and output
         if (FileCheckBox.isSelected()) {
             try {
                 File out = new File("output.txt");
                 FileWriter outWrite = new FileWriter("output.txt");
 
-                outWrite.write("Table: " + tables[0] + "\n");
-
-                for (int i = 0; i < columns.length; i++) {
-                    outWrite.write(columns[i] + "\t");
-                }
-                outWrite.write("\n");
-
-                for (int i = 0; i < splitData[0].length; i++) {
-                    for (int j = 0; j < splitData.length; j++) {
-                        outWrite.write(splitData[j][i] + "\t");
-                    }
-                    outWrite.write("\n");
-                }
+                outWrite.write(output.toString());
 
                 outWrite.close();
             } catch (IOException e) { System.out.println(e); }
@@ -351,19 +374,7 @@ public class dbGui extends javax.swing.JFrame {
         StyledDocument doc = DatabaseOutput.getStyledDocument();
 
         try {
-            doc.insertString(0, "Table: " + tables[0] + "\n", null);
-
-            for(int i = 0; i < columns.length; i++) {
-                doc.insertString(doc.getLength(), columns[i] + "\t", null);
-            }
-            doc.insertString(doc.getLength(), "\n", null);
-
-            for (int i = 0; i < splitData[0].length; i++) {
-                for(int j = 0; j < splitData.length; j++) {
-                    doc.insertString(doc.getLength(), splitData[j][i] + "\t", null);
-                }
-                doc.insertString(doc.getLength(), "\n", null);
-            }
+            doc.insertString(0, output.toString(), null);
         } catch(Exception e) { System.out.println(e); }
     }                                            
 

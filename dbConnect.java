@@ -55,7 +55,7 @@ public class dbConnect {
     }
 
     //Give the table, array of columns, and season to make a query
-    String makeQuery(String[] tables, String[] columns, String joinBy, int firstColumns, int season) {
+    String makeQuery(String[] tables, String[] columns, String joinBy, int firstColumns, String season) {
         //start the query
         String query = "SELECT ";
 
@@ -85,7 +85,7 @@ public class dbConnect {
 
 
         //add the season
-        if (season > 0) {
+        if (!season.equals("All")) {
             query += " WHERE " + tables[0] + ".season = " + season + " AND " + tables[1] + ".season = " + season + ";";
         } else {
             query += ";";
