@@ -11,15 +11,13 @@ import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
 import java.io.*;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
- *
- * @author Jacob
+ * Class that will be used to launch the GUI to help the user interact with the database.
+ * 
+ * @author Jacob DuBois
+ * @author William Fairleigh
+ * @author Derrick Galindo
+ * @author Wyatt Hansen
  */
 public class dbGui extends javax.swing.JFrame {
 

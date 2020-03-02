@@ -2,10 +2,6 @@
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import javax.swing.table.*;
-import java.util.*;
-import java.awt.color.*;
 
 /**
  * Class that is used to create a combo box that can select multiple items from the list.
@@ -13,9 +9,8 @@ import java.awt.color.*;
  * Selected items will appear as gray.
  * 
  * @author Jacob DuBois
- * 
  */
-public class JCheckComboBox extends JComboBox {
+public class JCheckComboBox extends JComboBox<String> {
     private static final long serialVersionUID = 1L;
     private ColoredCellRenderer crenderer;
 
