@@ -4,6 +4,7 @@ import javax.swing.text.StyledDocument;
 import java.io.File; // Import the File class
 import java.io.FileWriter;
 import java.io.IOException; // Import the IOException class to handle errors
+import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.Locale;
 import java.lang.StringBuilder;
@@ -82,6 +83,9 @@ public class dbGui extends javax.swing.JFrame {
              "qb hurry", "fumble forced", "pass broken up", "kick/punt blocked", "1st down rush", "1st down pass", "1st down penalty", "time of possession",
              "penalty", "penalty yard", "third down att", "third down conv", "fourth down att", "fourth down conv", "red zone att", "red zone td", "red zone field goal",
              "season", "row number"};
+    //String [] commonElements;
+    ArrayList<String> commonElements = new ArrayList<String>();
+    String[] JoinArray;
 
 
 
@@ -141,7 +145,7 @@ public class dbGui extends javax.swing.JFrame {
         jCheckBoxMenuItem4.setSelected(true);
         jCheckBoxMenuItem4.setText("jCheckBoxMenuItem4");
         
-        ImageIcon Logo = new ImageIcon("resources\\teamlogo.png");
+        ImageIcon Logo = new ImageIcon("resources//teamlogo.png");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -246,11 +250,12 @@ public class dbGui extends javax.swing.JFrame {
             }
         });
 
-        JoinComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {"season"}));
+        JoinComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {}));
         JoinComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 JoinComboBoxActionPerformed(evt);
             }
+
         });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -593,6 +598,14 @@ public class dbGui extends javax.swing.JFrame {
         }
 
         Column2ComboBox.setCheckedSize();
+        for (int i = 0; i < Column1ComboBox.getItemCount(); i++) {
+            for (int j = 0; j < Column2ComboBox.getItemCount(); j++) {
+                if (Column1ComboBox.getItemAt(i) == Column2ComboBox.getItemAt(j)) {
+                    JoinComboBox.addItem((String)Column1ComboBox.getItemAt(i));
+                    break;
+                }
+            }
+        }  
     }                                              
 
     private void EnableJoin1CheckBoxActionPerformed(java.awt.event.ActionEvent evt) {                                                    
