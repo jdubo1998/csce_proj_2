@@ -246,6 +246,13 @@ public class dbGui extends javax.swing.JFrame {
             }
         });
 
+        JoinComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {"season"}));
+        JoinComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JoinComboBoxActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -424,17 +431,29 @@ public class dbGui extends javax.swing.JFrame {
     }                                            
 
     private void SubmitButtonActionPerformed(java.awt.event.ActionEvent evt) {                                             
-        // TODO add your handling code here:
         username = UsernameTextField.getText();
         password = String.copyValueOf(PasswordTextField.getPassword());
         // set up a dbConnect object to talk to the database
         dbConnect conn = new dbConnect(username, password);
 
         // set up a query to use and what columns to use
-        columns = new String[]{ "conference code", "name", "name" };
-        tables[0] = "conference";
-        tables[1] = "team";
-        query = conn.makeQuery(tables, columns, "conference code", 2, Season1ComboBox.getSelectedItem().toString());
+        String[] col1 = Column1ComboBox.getChecked();
+        String[] col2 = Column2ComboBox.getChecked();
+
+        columns = new String[col1.length + col2.length];
+
+        for(int i = 0; i < col1.length; i++) {
+            columns[i] = col1[i];
+        }
+        for(int i = 0; i < col2.length; i++) {
+            columns[i + col1.length] = col2[i];
+        }
+
+        joinBy = JoinComboBox.getSelectedItem().toString();
+
+        tables[0] = Table1ComboBox.getSelectedItem().toString();
+        tables[1] = Table2ComboBox.getSelectedItem().toString();
+        query = conn.makeQuery(tables, columns, joinBy, col1.length, Season1ComboBox.getSelectedItem().toString());
 
         // send the query to the database
         String[] data = conn.sendQuery(query, columns);
@@ -457,10 +476,6 @@ public class dbGui extends javax.swing.JFrame {
             for (int j = 0; j < splitData[i].length; j++){
                 maxlengths[i] = Math.max(splitData[i][j].length(), maxlengths[i]);
             }
-        }
-
-        for(int i = 0; i < maxlengths.length; i++) {
-            System.out.println(maxlengths[i]);
         }
 
         //Start formatting the output in an even way
@@ -575,7 +590,11 @@ public class dbGui extends javax.swing.JFrame {
 
     private void EnableJoin1CheckBoxActionPerformed(java.awt.event.ActionEvent evt) {                                                    
         // TODO add your handling code here:
-    }                                                   
+    }       
+    
+    private void JoinComboBoxActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+    }
 
     /**
      * @param args the command line arguments
