@@ -456,7 +456,9 @@ public class dbGui extends javax.swing.JFrame {
             columns[i + col1.length] = col2[i];
         }
 
-        joinBy = JoinComboBox.getSelectedItem().toString();
+        if (JoinComboBox.getSelectedItem() != null) {
+            joinBy = JoinComboBox.getSelectedItem().toString();
+        }
 
         tables[0] = Table1ComboBox.getSelectedItem().toString();
 
