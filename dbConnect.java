@@ -1,11 +1,15 @@
 import java.sql.*;
 
-/*
-William Fairleigh - based off of jdbcpostgreSQL.java written by Robert Lightfoot
-CSCE 315
-2/28/2020 - Original
-2/29/2020 - Add makeQuery
-*/
+/**
+ * Class that is used to be able to connect to a preset psql server
+ * @author William Fairleigh
+ * 
+ * based off of jdbcpostgreSQL.java written by Robert Lightfoot
+ * 
+ * 2/28/2020 - Original
+ * 2/29/2020 - Add makeQuery and bugfixes
+ * 
+ */
 
 public class dbConnect {
     //The connection that is used to talk to the database
@@ -16,7 +20,13 @@ public class dbConnect {
     private String user;
     private String pswd;
 
-    //Constructor that is used to connect to the database
+    /**
+     * 
+     * Constructor that sets up a connection to team2_904_cfb
+     * 
+     * @param username the username used to connect to the database
+     * @param password the password used to connect to the database
+     */
     dbConnect(String username, String password) {
         user = username;
         pswd = password;
@@ -31,7 +41,11 @@ public class dbConnect {
         }
     }
 
-    //Function that will send a query to the database and give data back
+    /**
+     * @param query the query that will be sent to the database
+     * @param columns the columns that should be returned from the database
+     * @return a string array of data in each columns that has be returned
+     */
     String[] sendQuery(String query, String[] columns) {
         String[] data = new String[columns.length];
 
@@ -54,7 +68,14 @@ public class dbConnect {
         return data;
     }
 
-    //Give the table, array of columns, and season to make a query
+    /**
+     * @param tables the tables to get data from
+     * @param columns the columns that hold the needed data
+     * @param joinBy what to join the two tables by
+     * @param firstColumns how many columns are from the first table
+     * @param season what season to get the data from
+     * @return a string that conntains a query that will be sent to the database
+     */
     String makeQuery(String[] tables, String[] columns, String joinBy, int firstColumns, String season) {
         //start the query
         String query = "SELECT ";
