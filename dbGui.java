@@ -31,6 +31,8 @@ public class dbGui extends javax.swing.JFrame {
     // Username and Password holders
     String username;
     String password;
+
+
     String[] conferenceColumns = { "conference code", "subdivision", "name", "season" };
     String[] driveColumns = { "game code", "drive number", "team code", "start period", "start clock", "start spot",
             "start reason", "end period", "end clock", "end spot", "end reason", "plays", "yards", "time of possession",
@@ -450,7 +452,14 @@ public class dbGui extends javax.swing.JFrame {
         joinBy = JoinComboBox.getSelectedItem().toString();
 
         tables[0] = Table1ComboBox.getSelectedItem().toString();
-        tables[1] = Table2ComboBox.getSelectedItem().toString();
+
+        if(EnableJoin1CheckBox.isSelected()) {
+            tables[1] = Table2ComboBox.getSelectedItem().toString();
+        }
+        else {
+            tables[1] = "null";
+        }
+
         query = conn.makeQuery(tables, columns, joinBy, col1.length, Season1ComboBox.getSelectedItem().toString());
 
         // send the query to the database

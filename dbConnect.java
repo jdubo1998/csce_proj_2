@@ -85,20 +85,21 @@ public class dbConnect {
         for(i = 0; i < columns.length - 1; i++) {
             if (i < firstColumns) {
                 query +=  tables[0] + "." + "\"" + columns[i] + "\", ";
-            } else {
+            } else if  (!tables[1].equals("null")) {
                 query += tables[1] + "." + "\"" + columns[i] + "\", ";
             }
         }
+
         if (i < firstColumns) {
             query +=  tables[0] + "." + "\"" + columns[i] + "\" ";
-        } else {
+        } else if (!tables[1].equals("null")) {
             query +=  tables[1] + "." + "\"" + columns[i] + "\" ";
         }
 
         // start adding tables
         query += "FROM " + tables[0];
 
-        if(tables.length > 1) {
+        if(!tables[1].equals("null")) {
             for(i = 1; i < tables.length; i++) {
                 query += " JOIN " + tables[i] + " ON " + tables[0] + "." + "\"" + joinBy + "\"=" + tables[i] + "." + "\"" + joinBy + "\"";
             }
@@ -106,9 +107,13 @@ public class dbConnect {
 
 
         //add the season
-        if (!season.equals("All")) {
+        if (!season.equals("All") && !tables[1].equals("null")) {
             query += " WHERE " + tables[0] + ".season = " + season + " AND " + tables[1] + ".season = " + season + ";";
-        } else {
+        }
+        else if (!season.equals("All")) {
+            query += " WHERE " + tables[0] + ".season = " + season + ";";
+        }
+         else {
             query += ";";
         }
 
