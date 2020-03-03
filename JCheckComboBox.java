@@ -125,7 +125,8 @@ class ColoredCellRenderer extends DefaultListCellRenderer {
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         Component c = defaultRenderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
-        if (c instanceof JLabel && index >= 0) {
+        if (c instanceof JLabel && index >= 0 && index < isChecked.length) {
+            System.out.println(index);
             if (isChecked[index]) {
                 c.setBackground(Color.gray);
             }

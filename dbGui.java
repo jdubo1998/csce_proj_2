@@ -423,19 +423,19 @@ public class dbGui extends javax.swing.JFrame {
     }
                                               
 
-    private void PasswordTextFieldActionPerformed(java.awt.event.ActionEvent evt) {                                                  
+    private void PasswordTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
     }                                                 
 
-    private void UsernameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {                                                  
+    private void UsernameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
     }                                                 
 
-    private void FileCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {                                             
+    private void FileCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
     }                                            
 
-    private void SubmitButtonActionPerformed(java.awt.event.ActionEvent evt) {                                             
+    private void SubmitButtonActionPerformed(java.awt.event.ActionEvent evt) {
         username = UsernameTextField.getText();
         password = String.copyValueOf(PasswordTextField.getPassword());
         // set up a dbConnect object to talk to the database
@@ -543,7 +543,7 @@ public class dbGui extends javax.swing.JFrame {
         // TODO add your handling code here:
     }                                               
 
-    private void Table2ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {                                               
+    private void Table2ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         if ("conference".equals(Table2ComboBox.getSelectedItem())){
             Column2ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(conferenceColumns));
@@ -598,6 +598,7 @@ public class dbGui extends javax.swing.JFrame {
         }
 
         Column2ComboBox.setCheckedSize();
+
         for (int i = 0; i < Column1ComboBox.getItemCount(); i++) {
             for (int j = 0; j < Column2ComboBox.getItemCount(); j++) {
                 if (Column1ComboBox.getItemAt(i) == Column2ComboBox.getItemAt(j)) {
