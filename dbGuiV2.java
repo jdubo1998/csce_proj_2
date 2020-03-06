@@ -1,3 +1,17 @@
+import java.awt.Image;
+import javax.swing.ImageIcon;
+import javax.swing.text.StyledDocument;
+import java.io.File; // Import the File class
+import java.io.FileWriter;
+import java.io.IOException; // Import the IOException class to handle errors
+import java.util.ArrayList;
+import java.util.Formatter;
+import java.util.Locale;
+import java.lang.StringBuilder;
+import javax.swing.ComboBoxModel;
+import javax.swing.JComboBox;
+import java.io.*;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -8,12 +22,67 @@
  *
  * @author Jacob
  */
-public class dbGui extends javax.swing.JFrame {
+public class dbGuiV2 extends javax.swing.JFrame {
+
+    String[] conferenceColumns = { "conference code", "subdivision", "name", "season" };
+    String[] driveColumns = { "game code", "drive number", "team code", "start period", "start clock", "start spot",
+            "start reason", "end period", "end clock", "end spot", "end reason", "plays", "yards", "time of possession",
+            "red zone attempt", "season" };
+    String[] gameColumns = { "game code", "date", "visit team code", "home team code", "stadium code", "site",
+            "season" };
+    String[] game_statisticsColumns = { "game code", "attendance", "duration", "season" };
+    String[] kickoffColumns = { "game code", "play number", "team code", "player code", "attempt", "yards",
+            "fair catch", "touchback", "downed", "out of bounds", "onside", "onside success", "season", "row number" };
+    String[] kickoff_returnColumns = { "game code", "play number", "team code", "player code", "attempt", "yards",
+            "touchdown", "fumble", "fumble lost", "safety", "fair catch", "season", "row number" };
+    String[] passColumns = { "game code", "play number", "team code", "passer player code", "receiver player code",
+            "attempt", "completion", "yards", "touchdown", "interception", "1st down", "dropped", "season",
+            "row number" };
+    String[] playColumns = { "game code", "play number", "period number", "clock", "offense team code",
+            "defense team code", "offense points", "defense points", "down", "distance", "spot", "play type",
+            "drive number", "drive play", "season", "row number" };
+    String[] playerColumns = { "player code", "team code", "last name", "first name", "uniform number", "class",
+            "position", "height", "weight", "home town", "home state", "home country", "last school", "season" };
+    String[] player_game_statisticsColumns = { "player code", "game code", "rush att", "rush yard", "rush td",
+            "pass att", "pass comp", "pass yard", "pass td", "pass int", "pass conv", "rec", "rec yards", "rec td",
+            "kickoff ret", "kickoff ret yard", "kickoff ret td", "punt ret", "punt ret yard", "punt ret td", "fum ret",
+            "fum ret yard", "fum ret td", "int ret", "int ret yard", "int ret td", "misc ret", "misc ret yard",
+            "misc ret td", "field goal att", "field goal made", "off xp kick att", "off xp kick made", "off 2xp att",
+            "off 2xp made", "def 2xp att", "def 2xp made", "safety", "points", "punt", "punt yard", "kickoff",
+            "kickoff yard", "kickoff touchback", "kickoff out of bounds", "kickoff onside", "fumble", "fumble lost",
+            "tackle solo", "tackle assist", "tackle for loss", "tackle for loss yard", "sack", "sack yard", "qb hurry",
+            "fumble forced", "pass broken up", "kick punt blocked", "season", "row number" };
+    String[] puntColumns = { "game code", "play number", "team code", "player code", "attempt", "yards", "blocked",
+            "fair catch", "touchback", "downed", "out of bounds", "season", "row number" };
+    String[] punt_returnColumns = { "game code", "play number", "team code", "player code", "attempt", "yards",
+            "touchdown", "fumble", "fumble lost", "safety", "fair catch", "season", "row number" };
+    String[] receptionColumns = { "game code", "play number", "team code", "player code", "reception", "yards",
+            "touchdown", "1st down", "fumble", "fumble lost", "safety", "season", "row number" };
+    String[] rushColumns = { "game code", "play number", "team code", "player code", "attempt", "yards", "touchdown",
+            "1st down", "sack", "fumble", "fumble lost", "safety", "season", "row number" };
+    String[] stadiumColumns = { "stadium code", "name", "city", "state", "capacity", "surface", "year opened",
+            "season" };
+    String[] teamColumns = { "team code", "name", "conference code", "season" };
+    String[] team_game_statisticsColumns = { "team code", "game code", "rush att", "rush yard", "rush td", "pas att",
+            "pass comp", "pass yard", "pass td", "pass int", "pass conb", "kickoff ret", "kickoff ret yard",
+            "kickoff ret td", "punt reg", "punt ret yard", "punt ret td", "fum ret", "fum ret yard", "fum ret td",
+            "int ret", "int ret yard", "int ret td", "misc ret", "misc ret yard", "misc ret td", "field goal att",
+            "field goal made", "off xp kick att", "off xp kick made", "off 2xp kick att", "off 2xp kick made",
+            "def 2xp att", "def 2xp made", "safety", "points", "punt", "punt yard", "kickoff", "kickoff yard",
+            "kickoff touchback", "kickoff out-of-bounds", "kickoff onside", "fumble", "fumble lost", "tackle solo",
+            "tackle assist", "tackle for loss", "tackle for loss yard", "sack", "sack yard", "qb hurry",
+            "fumble forced", "pass broken up", "kick/punt blocked", "1st down rush", "1st down pass",
+            "1st down penalty", "time of possession", "penalty", "penalty yard", "third down att", "third down conv",
+            "fourth down att", "fourth down conv", "red zone att", "red zone td", "red zone field goal", "season",
+            "row number" };
+    // String [] commonElements;
+    ArrayList<String> commonElements = new ArrayList<String>();
+    String[] JoinArray;
 
     /**
      * Creates new form dbGui
      */
-    public dbGui() {
+    public dbGuiV2() {
         initComponents();
     }
 
@@ -48,8 +117,8 @@ public class dbGui extends javax.swing.JFrame {
         DefaultTableBox1 = new javax.swing.JComboBox<>();
         DefaultTableBox2 = new javax.swing.JComboBox<>();
         ColumnLabel = new javax.swing.JLabel();
-        DefaultColumnBox1 = new javax.swing.JComboBox<>();
-        DefaultColumnBox2 = new javax.swing.JComboBox<>();
+        DefaultColumnBox1 = new JCheckComboBox();
+        DefaultColumnBox2 = new JCheckComboBox();
         SeasonLabel = new javax.swing.JLabel();
         DefaultSeasonBox = new javax.swing.JComboBox<>();
         JoinLabel = new javax.swing.JLabel();
@@ -101,7 +170,10 @@ public class dbGui extends javax.swing.JFrame {
 
         TableLabel1.setText("Table");
 
-        Table1ComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "conference" }));
+        ImageIcon logoImage = new ImageIcon("resources//teamlogo.png");
+        Logo.setIcon(new ImageIcon(logoImage.getImage().getScaledInstance(163, 163, Image.SCALE_SMOOTH)));
+
+        Table1ComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(conferenceColumns));
         Table1ComboBox1.setToolTipText("");
         Table1ComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -111,7 +183,7 @@ public class dbGui extends javax.swing.JFrame {
 
         ColumnLabel1.setText("Column");
 
-        Column1ComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "conference code", "subdivision", "name", "season" }));
+        Column1ComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(conferenceColumns));
         Column1ComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Column1ComboBox1ActionPerformed(evt);
@@ -140,14 +212,14 @@ public class dbGui extends javax.swing.JFrame {
         DatabaseOutput.setEditable(false);
         jScrollPane1.setViewportView(DatabaseOutput);
 
-        Logo.setText("LOGO");
-
         TeamNameLabel.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         TeamNameLabel.setText("College Football Statistics Database");
 
         TableLabel.setText("Table");
 
-        DefaultTableBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "conference" }));
+        DefaultTableBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "conference", "drive", "game",
+                "game_statistics", "kickoff", "kickoff_return", "pass", "play", "player", "player_game_statistics",
+                "punt", "punt_return", "reception", "rush", "stadium", "team", "team_game_statistics" }));
         DefaultTableBox1.setToolTipText("");
         DefaultTableBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -155,7 +227,9 @@ public class dbGui extends javax.swing.JFrame {
             }
         });
 
-        DefaultTableBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "conference" }));
+        DefaultTableBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "conference", "drive", "game",
+                "game_statistics", "kickoff", "kickoff_return", "pass", "play", "player", "player_game_statistics",
+                "punt", "punt_return", "reception", "rush", "stadium", "team", "team_game_statistics" }));
         DefaultTableBox2.setToolTipText("");
         DefaultTableBox2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -622,8 +696,105 @@ public class dbGui extends javax.swing.JFrame {
         // TODO add your handling code here:
     }                                            
 
-    private void SubmitButtonActionPerformed(java.awt.event.ActionEvent evt) {                                             
-        // TODO add your handling code here:
+    private void SubmitButtonActionPerformed(java.awt.event.ActionEvent evt) {      
+        // Useful arrays and strings
+        String[] tables = new String[2];
+        String[] columns;
+        String joinBy;
+        String query;
+        int season;
+
+        // Username and Password holders
+        String username;
+        String password;
+        
+        username = UsernameTextField.getText();
+        password = String.copyValueOf(PasswordTextField.getPassword());
+        // set up a dbConnect object to talk to the database
+        dbConnect conn = new dbConnect(username, password);
+
+        // set up a query to use and what columns to use
+        String[] col1 = DefaultColumnBox1.getChecked();
+        String[] col2 = DefaultColumnBox2.getChecked();
+
+        columns = new String[col1.length + col2.length];
+
+        for (int i = 0; i < col1.length; i++) {
+            columns[i] = col1[i];
+        }
+        for (int i = 0; i < col2.length; i++) {
+            columns[i + col1.length] = col2[i];
+        }
+
+        joinBy = DefaultJoinBox.getSelectedItem().toString();
+
+        tables[0] = DefaultTableBox1.getSelectedItem().toString();
+        tables[1] = DefaultTableBox2.getSelectedItem().toString();
+
+        query = conn.makeQuery(tables, columns, joinBy, col1.length, DefaultSeasonBox.getSelectedItem().toString());
+
+        // send the query to the database
+        String[] data = conn.sendQuery(query, columns);
+
+        // split the data into a more usable format
+        String[][] splitData = new String[columns.length][];
+
+        for (int i = 0; i < columns.length; i++) {
+            splitData[i] = data[i].split("\n");
+        }
+
+        // find largets string
+        int[] maxlengths = new int[columns.length];
+
+        for (int i = 0; i < columns.length; i++) {
+            maxlengths[i] = columns[i].length();
+        }
+
+        for (int i = 0; i < splitData.length; i++) {
+            for (int j = 0; j < splitData[i].length; j++) {
+                maxlengths[i] = Math.max(splitData[i][j].length(), maxlengths[i]);
+            }
+        }
+
+        // Start formatting the output in an even way
+        StringBuilder output = new StringBuilder();
+        Formatter formated = new Formatter(output, Locale.US);
+
+        formated.format("Table 1:%20s\tTable2:%20s\n", tables[0], tables[1]);
+        for (int i = 0; i < columns.length; i++) {
+            formated.format("%-" + maxlengths[i] + "s%5s|%5s", columns[i], " ", " ");
+        }
+        formated.format("\n");
+
+        for (int i = 0; i < splitData[0].length; i++) {
+            for (int j = 0; j < columns.length; j++) {
+                formated.format("%-" + maxlengths[j] + "s%5s|%5s", splitData[j][i], " ", " ");
+            }
+            formated.format("\n");
+        }
+
+        formated.close();
+        // end formating and output
+        if (FileCheckBox.isSelected()) {
+            try {
+                File out = new File("output.txt");
+                FileWriter outWrite = new FileWriter("output.txt");
+
+                outWrite.write(output.toString());
+
+                outWrite.close();
+            } catch (IOException e) {
+                System.out.println(e);
+            }
+        }
+        DatabaseOutput.setText("");
+        StyledDocument doc = DatabaseOutput.getStyledDocument();
+
+        try {
+            doc.insertString(0, output.toString(), null);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }                                            
 
     private void DefaultJoinBoxActionPerformed(java.awt.event.ActionEvent evt) {                                               
@@ -639,15 +810,96 @@ public class dbGui extends javax.swing.JFrame {
     }                                                 
 
     private void DefaultColumnBox1ActionPerformed(java.awt.event.ActionEvent evt) {                                                  
-        // TODO add your handling code here:
+        
     }                                                 
 
     private void DefaultTableBox2ActionPerformed(java.awt.event.ActionEvent evt) {                                                 
-        // TODO add your handling code here:
+        if ("conference".equals(DefaultTableBox2.getSelectedItem())) {
+            DefaultColumnBox2.setModel(new javax.swing.DefaultComboBoxModel<>(conferenceColumns));
+        } else if ("drive".equals(DefaultTableBox2.getSelectedItem())) {
+            DefaultColumnBox2.setModel(new javax.swing.DefaultComboBoxModel<>(driveColumns));
+        } else if ("game".equals(DefaultTableBox2.getSelectedItem())) {
+            DefaultColumnBox2.setModel(new javax.swing.DefaultComboBoxModel<>(gameColumns));
+        } else if ("game_statistics".equals(DefaultTableBox2.getSelectedItem())) {
+            DefaultColumnBox2.setModel(new javax.swing.DefaultComboBoxModel<>(game_statisticsColumns));
+        } else if ("kickoff".equals(DefaultTableBox2.getSelectedItem())) {
+            DefaultColumnBox2.setModel(new javax.swing.DefaultComboBoxModel<>(kickoffColumns));
+        } else if ("kickoff_return".equals(DefaultTableBox2.getSelectedItem())) {
+            DefaultColumnBox2.setModel(new javax.swing.DefaultComboBoxModel<>(kickoff_returnColumns));
+        } else if ("pass".equals(DefaultTableBox2.getSelectedItem())) {
+            DefaultColumnBox2.setModel(new javax.swing.DefaultComboBoxModel<>(passColumns));
+        } else if ("play".equals(DefaultTableBox2.getSelectedItem())) {
+            DefaultColumnBox2.setModel(new javax.swing.DefaultComboBoxModel<>(playColumns));
+        } else if ("player".equals(DefaultTableBox2.getSelectedItem())) {
+            DefaultColumnBox2.setModel(new javax.swing.DefaultComboBoxModel<>(playerColumns));
+        } else if ("player_game_statistics".equals(DefaultTableBox2.getSelectedItem())) {
+            DefaultColumnBox2.setModel(new javax.swing.DefaultComboBoxModel<>(player_game_statisticsColumns));
+        } else if ("punt".equals(DefaultTableBox2.getSelectedItem())) {
+            DefaultColumnBox2.setModel(new javax.swing.DefaultComboBoxModel<>(puntColumns));
+        } else if ("punt_return".equals(DefaultTableBox2.getSelectedItem())) {
+            DefaultColumnBox2.setModel(new javax.swing.DefaultComboBoxModel<>(punt_returnColumns));
+        } else if ("reception".equals(DefaultTableBox2.getSelectedItem())) {
+            DefaultColumnBox2.setModel(new javax.swing.DefaultComboBoxModel<>(receptionColumns));
+        } else if ("rush".equals(DefaultTableBox2.getSelectedItem())) {
+            DefaultColumnBox2.setModel(new javax.swing.DefaultComboBoxModel<>(rushColumns));
+        } else if ("stadium".equals(DefaultTableBox2.getSelectedItem())) {
+            DefaultColumnBox2.setModel(new javax.swing.DefaultComboBoxModel<>(stadiumColumns));
+        } else if ("team".equals(DefaultTableBox2.getSelectedItem())) {
+            DefaultColumnBox2.setModel(new javax.swing.DefaultComboBoxModel<>(teamColumns));
+        } else {
+            DefaultColumnBox2.setModel(new javax.swing.DefaultComboBoxModel<>(team_game_statisticsColumns));
+        }
+
+        DefaultColumnBox2.setCheckedSize();
+
+        for (int i = 0; i < DefaultColumnBox1.getItemCount(); i++) {
+            for (int j = 0; j < DefaultColumnBox2.getItemCount(); j++) {
+                if (DefaultColumnBox1.getItemAt(i) == DefaultColumnBox2.getItemAt(j)) {
+                    DefaultJoinBox.addItem((String) DefaultColumnBox1.getItemAt(i));
+                    break;
+                }
+            }
+        }
     }                                                
 
     private void DefaultTableBox1ActionPerformed(java.awt.event.ActionEvent evt) {                                                 
-        // TODO add your handling code here:
+        if ("conference".equals(DefaultTableBox1.getSelectedItem())) {
+            DefaultColumnBox1.setModel(new javax.swing.DefaultComboBoxModel<>(conferenceColumns));
+        } else if ("drive".equals(DefaultTableBox1.getSelectedItem())) {
+            DefaultColumnBox1.setModel(new javax.swing.DefaultComboBoxModel<>(driveColumns));
+        } else if ("game".equals(DefaultTableBox1.getSelectedItem())) {
+            DefaultColumnBox1.setModel(new javax.swing.DefaultComboBoxModel<>(gameColumns));
+        } else if ("game_statistics".equals(DefaultTableBox1.getSelectedItem())) {
+            DefaultColumnBox1.setModel(new javax.swing.DefaultComboBoxModel<>(game_statisticsColumns));
+        } else if ("kickoff".equals(DefaultTableBox1.getSelectedItem())) {
+            DefaultColumnBox1.setModel(new javax.swing.DefaultComboBoxModel<>(kickoffColumns));
+        } else if ("kickoff_return".equals(DefaultTableBox1.getSelectedItem())) {
+            DefaultColumnBox1.setModel(new javax.swing.DefaultComboBoxModel<>(kickoff_returnColumns));
+        } else if ("pass".equals(DefaultTableBox1.getSelectedItem())) {
+            DefaultColumnBox1.setModel(new javax.swing.DefaultComboBoxModel<>(passColumns));
+        } else if ("play".equals(DefaultTableBox1.getSelectedItem())) {
+            DefaultColumnBox1.setModel(new javax.swing.DefaultComboBoxModel<>(playColumns));
+        } else if ("player".equals(DefaultTableBox1.getSelectedItem())) {
+            DefaultColumnBox1.setModel(new javax.swing.DefaultComboBoxModel<>(playerColumns));
+        } else if ("player_game_statistics".equals(DefaultTableBox1.getSelectedItem())) {
+            DefaultColumnBox1.setModel(new javax.swing.DefaultComboBoxModel<>(player_game_statisticsColumns));
+        } else if ("punt".equals(DefaultTableBox1.getSelectedItem())) {
+            DefaultColumnBox1.setModel(new javax.swing.DefaultComboBoxModel<>(puntColumns));
+        } else if ("punt_return".equals(DefaultTableBox1.getSelectedItem())) {
+            DefaultColumnBox1.setModel(new javax.swing.DefaultComboBoxModel<>(punt_returnColumns));
+        } else if ("reception".equals(DefaultTableBox1.getSelectedItem())) {
+            DefaultColumnBox1.setModel(new javax.swing.DefaultComboBoxModel<>(receptionColumns));
+        } else if ("rush".equals(DefaultTableBox1.getSelectedItem())) {
+            DefaultColumnBox1.setModel(new javax.swing.DefaultComboBoxModel<>(rushColumns));
+        } else if ("stadium".equals(DefaultTableBox1.getSelectedItem())) {
+            DefaultColumnBox1.setModel(new javax.swing.DefaultComboBoxModel<>(stadiumColumns));
+        } else if ("team".equals(DefaultTableBox1.getSelectedItem())) {
+            DefaultColumnBox1.setModel(new javax.swing.DefaultComboBoxModel<>(teamColumns));
+        } else {
+            DefaultColumnBox1.setModel(new javax.swing.DefaultComboBoxModel<>(team_game_statisticsColumns));
+        }
+
+        DefaultColumnBox1.setCheckedSize();
     }                                                
 
     private void Table1ComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {                                                
@@ -699,20 +951,20 @@ public class dbGui extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(dbGui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(dbGuiV2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(dbGui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(dbGuiV2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(dbGui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(dbGuiV2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(dbGui.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(dbGuiV2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new dbGui().setVisible(true);
+                new dbGuiV2().setVisible(true);
             }
         });
     }
@@ -726,8 +978,8 @@ public class dbGui extends javax.swing.JFrame {
     private javax.swing.JLabel ColumnLabel3;
     private javax.swing.JTextPane DatabaseOutput;
     private javax.swing.JCheckBox DefaultCheckBox;
-    private javax.swing.JComboBox<String> DefaultColumnBox1;
-    private javax.swing.JComboBox<String> DefaultColumnBox2;
+    private JCheckComboBox DefaultColumnBox1;
+    private JCheckComboBox DefaultColumnBox2;
     private javax.swing.JComboBox<String> DefaultJoinBox;
     private javax.swing.JComboBox<String> DefaultSeasonBox;
     private javax.swing.JComboBox<String> DefaultTableBox1;

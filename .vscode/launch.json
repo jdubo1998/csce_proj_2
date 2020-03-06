@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - dbGuiV2",
+            "request": "launch",
+            "mainClass": "dbGuiV2",
+            "projectName": "csce_proj_2_e916b9f3"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - dbGui",
             "request": "launch",
             "mainClass": "dbGui",
@@ -22,6 +29,13 @@
             "name": "Debug (Launch)-GUI<csce_proj_2_e916b9f3>",
             "request": "launch",
             "mainClass": "dbGui",
+            "projectName": "csce_proj_2_e916b9f3"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-GUIV2<csce_proj_2_e916b9f3>",
+            "request": "launch",
+            "mainClass": "dbGuiV2",
             "projectName": "csce_proj_2_e916b9f3"
         },
         {
