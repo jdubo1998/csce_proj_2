@@ -715,30 +715,54 @@ public class dbGuiV2 extends javax.swing.JFrame {
         // set up a dbConnect object to talk to the database
         dbConnect conn = new dbConnect(username, password);
 
-        // set up a query to use and what columns to use
-        String[] col1 = DefaultColumnBox1.getChecked();
-        String[] col2 = DefaultColumnBox2.getChecked();
-
-        columns = new String[col1.length + col2.length];
-
-        for (int i = 0; i < col1.length; i++) {
-            columns[i] = col1[i];
-        }
-        for (int i = 0; i < col2.length; i++) {
-            columns[i + col1.length] = col2[i];
-        }
-
-        joinBy = DefaultJoinBox.getSelectedItem().toString();
-
-        tables[0] = DefaultTableBox1.getSelectedItem().toString();
-        tables[1] = DefaultTableBox2.getSelectedItem().toString();
-
         // Start formatting the output in an even way
         StringBuilder output = new StringBuilder();
         Formatter formated = new Formatter(output, Locale.US);
 
-        Questions.normal(formated, conn, tables, columns, joinBy, col1.length, 
-                DefaultSeasonBox.getSelectedItem().toString());
+        switch(jTabbedPane1.getSelectedIndex()) {
+            case (0):
+                // set up a query to use and what columns to use
+                String[] col1 = DefaultColumnBox1.getChecked();
+                String[] col2 = DefaultColumnBox2.getChecked();
+
+                columns = new String[col1.length + col2.length];
+
+                for (int i = 0; i < col1.length; i++) {
+                    columns[i] = col1[i];
+                }
+                for (int i = 0; i < col2.length; i++) {
+                    columns[i + col1.length] = col2[i];
+                }
+
+                joinBy = DefaultJoinBox.getSelectedItem().toString();
+
+                tables[0] = DefaultTableBox1.getSelectedItem().toString();
+                tables[1] = DefaultTableBox2.getSelectedItem().toString();
+
+                Questions.normal(formated, conn, tables, columns, joinBy, col1.length,
+                        DefaultSeasonBox.getSelectedItem().toString());
+                break;
+            case (1):
+                formated.format("Q1 not implemented yet");
+                break;
+            case (2):
+                formated.format("Q2 not implemented yet");
+                break;
+            case (3):
+                formated.format("Q3 not implemented yet");
+                break;
+            case (4):
+                formated.format("Q4 not implemented yet");
+                break;
+            case (5):
+                formated.format("Q5 not implemented yet");
+                break;
+            default:
+                System.out.println("How did you get here?");
+                break;
+
+
+        }
 
         formated.close();
         // end formating and output
