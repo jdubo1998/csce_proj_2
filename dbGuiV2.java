@@ -1,4 +1,5 @@
 import java.awt.Image;
+import java.awt.Font;
 import javax.swing.ImageIcon;
 import javax.swing.text.StyledDocument;
 import java.io.File; // Import the File class
@@ -11,6 +12,7 @@ import java.lang.StringBuilder;
 import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
 import java.io.*;
+
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -762,13 +764,13 @@ public class dbGuiV2 extends javax.swing.JFrame {
 
         formated.format("Table 1:%20s\tTable2:%20s\n", tables[0], tables[1]);
         for (int i = 0; i < columns.length; i++) {
-            formated.format("%-" + maxlengths[i] + "s%5s|%5s", columns[i], " ", " ");
+            formated.format("%-" + maxlengths[i] + "s%2s|%2s", columns[i], " ", " ");
         }
         formated.format("\n");
 
         for (int i = 0; i < splitData[0].length; i++) {
             for (int j = 0; j < columns.length; j++) {
-                formated.format("%-" + maxlengths[j] + "s%5s|%5s", splitData[j][i], " ", " ");
+                formated.format("%-" + maxlengths[j] + "s%2s|%2s", splitData[j][i], " ", " ");
             }
             formated.format("\n");
         }
@@ -787,6 +789,8 @@ public class dbGuiV2 extends javax.swing.JFrame {
                 System.out.println(e);
             }
         }
+
+        DatabaseOutput.setFont(new Font("monospaced", Font.PLAIN, 12));
         DatabaseOutput.setText("");
         StyledDocument doc = DatabaseOutput.getStyledDocument();
 
@@ -806,11 +810,11 @@ public class dbGuiV2 extends javax.swing.JFrame {
     }                                                
 
     private void DefaultColumnBox2ActionPerformed(java.awt.event.ActionEvent evt) {                                                  
-        // TODO add your handling code here:
+        DefaultColumnBox2.setChecked(DefaultColumnBox2.getSelectedIndex());
     }                                                 
 
     private void DefaultColumnBox1ActionPerformed(java.awt.event.ActionEvent evt) {                                                  
-        
+        DefaultColumnBox1.setChecked(DefaultColumnBox1.getSelectedIndex());
     }                                                 
 
     private void DefaultTableBox2ActionPerformed(java.awt.event.ActionEvent evt) {                                                 
