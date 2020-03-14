@@ -8,9 +8,11 @@ import java.io.File; // Import the File class
 import java.io.FileWriter;
 import java.io.IOException; // Import the IOException class to handle errors
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Formatter;
 import java.util.Locale;
 import java.lang.StringBuilder;
+import java.util.LinkedHashSet;
 import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
 import java.io.*;
@@ -936,7 +938,26 @@ public class dbGuiV2 extends javax.swing.JFrame {
     }
     
     private void TabbedChanged(ChangeEvent e) {
-        // TODO add your handling code here:
+        // Username and Password holders
+        String username;
+        String password;
+
+        username = UsernameTextField.getText();
+        password = String.copyValueOf(PasswordTextField.getPassword());
+        // set up a dbConnect object to talk to the database
+
+        if (!username.isEmpty()) {
+            dbConnect conn = new dbConnect(username, password);
+
+            String[] teams = conn.sendQuery("SELECT name FROM team", "name".split(" "));
+            teams = teams[0].split("\n");
+
+            LinkedHashSet<String> removeDups = new LinkedHashSet<>(Arrays.asList(teams));
+
+            teams = removeDups.toArray(new String[] {});
+
+            Q3Box.setModel(new javax.swing.DefaultComboBoxModel<>(teams));
+        }
     }
 
     /**
