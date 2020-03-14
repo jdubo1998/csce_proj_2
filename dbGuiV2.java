@@ -2,6 +2,8 @@ import java.awt.Image;
 import java.awt.Font;
 import javax.swing.ImageIcon;
 import javax.swing.text.StyledDocument;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.io.File; // Import the File class
 import java.io.FileWriter;
 import java.io.IOException; // Import the IOException class to handle errors
@@ -174,6 +176,12 @@ public class dbGuiV2 extends javax.swing.JFrame {
 
         ImageIcon logoImage = new ImageIcon("resources//teamlogo.png");
         Logo.setIcon(new ImageIcon(logoImage.getImage().getScaledInstance(163, 163, Image.SCALE_SMOOTH)));
+
+        jTabbedPane1.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                TabbedChanged(e);
+            }
+        });
 
         Table1ComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(conferenceColumns));
         Table1ComboBox1.setToolTipText("");
@@ -925,7 +933,11 @@ public class dbGuiV2 extends javax.swing.JFrame {
 
     private void Q2TextField1ActionPerformed(java.awt.event.ActionEvent evt) {                                             
         // TODO add your handling code here:
-    }                                            
+    }
+    
+    private void TabbedChanged(ChangeEvent e) {
+        // TODO add your handling code here:
+    }
 
     /**
      * @param args the command line arguments
