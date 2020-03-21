@@ -54,8 +54,52 @@ public class Questions {
 
     }
 
-    static void q3(Formatter formated) {
+    static void q3(Formatter formated, dbConnect conn, String team) {
+        //get the team code needed
+        String query = "SELECT \"team code\" FROM team WHERE name = '" + team + "';";
+        String[] data = conn.sendQuery(query, "\"team code\"".split("\n"));
+        String teamCode = data[0].split("\n")[0];
 
+        //get the game codes that the team played in
+        query = "SELECT \"game code\" FROM game WHERE \"visit team code\" = '" + teamCode + "' OR \"home team code\" = '" + teamCode + "';";
+        data = conn.sendQuery(query, "\"game code\"".split("\n"));
+        String[] gameCodes = data[0].split("\n");
+
+        int maxYards = Integer.MIN_VALUE;
+        String game = "";
+        String bestTeam = "";
+
+        //set up the columns
+        String[] columns = new String[2];
+        columns[0] = "rush yard";
+        columns[1] = "team code";
+
+        //find best team and game
+        for (int i = 0; i < gameCodes.length; i++) {
+            query = "SELECT \"rush yard\", \"team code\" FROM team_game_statistics WHERE NOT \"team code\" = '" + teamCode + "' AND \"game code\" = '" + gameCodes[i] + "';";
+
+            data = conn.sendQuery(query, columns);
+
+            int yards = Integer.parseInt(data[0].trim());
+            if (yards > maxYards) {
+                maxYards = yards;
+                game = gameCodes[i];
+                bestTeam = data[1].trim();
+            }
+        }
+
+        //get name of best team
+        query = "SELECT name FROM team WHERE \"team code\" = '" + bestTeam + "';";
+        data = conn.sendQuery(query, "name".split("\n"));
+        String teamName = data[0].split("\n")[0];
+
+        //get date of game
+        query = "SELECT date FROM game WHERE \"game code\" = '" + game + "';";
+        data = conn.sendQuery(query, "date".split("\n"));
+        String date = data[0].trim();
+
+        //output
+        formated.format("%s had %s rushing yards against %s during the game on %s.\n", teamName, maxYards, team, date);
     }
 
     static void q4(Formatter formated) {

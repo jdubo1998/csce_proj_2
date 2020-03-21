@@ -222,6 +222,8 @@ public class dbGuiV2 extends javax.swing.JFrame {
         PasswordLabel.setText("Password");
 
         DatabaseOutput.setEditable(false);
+        DatabaseOutput.setFont(new Font("monospaced", Font.PLAIN, 12));
+        DatabaseOutput.setText("Please enter username and password, select options from above, and then hit submit.");
         jScrollPane1.setViewportView(DatabaseOutput);
 
         TeamNameLabel.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
@@ -713,8 +715,6 @@ public class dbGuiV2 extends javax.swing.JFrame {
         String[] tables = new String[2];
         String[] columns;
         String joinBy;
-        String query;
-        int season;
 
         // Username and Password holders
         String username;
@@ -759,7 +759,7 @@ public class dbGuiV2 extends javax.swing.JFrame {
                 formated.format("Q2 not implemented yet");
                 break;
             case (3):
-                formated.format("Q3 not implemented yet");
+                Questions.q3(formated, conn, Q3Box.getSelectedItem().toString());
                 break;
             case (4):
                 formated.format("Q4 not implemented yet");
@@ -789,7 +789,6 @@ public class dbGuiV2 extends javax.swing.JFrame {
             }
         }
 
-        DatabaseOutput.setFont(new Font("monospaced", Font.PLAIN, 12));
         DatabaseOutput.setText("");
         StyledDocument doc = DatabaseOutput.getStyledDocument();
 
@@ -949,6 +948,7 @@ public class dbGuiV2 extends javax.swing.JFrame {
         if (!username.isEmpty()) {
             dbConnect conn = new dbConnect(username, password);
 
+            /* Start setting up the question 3 input box */
             String[] teams = conn.sendQuery("SELECT name FROM team", "name".split(" "));
             teams = teams[0].split("\n");
 
@@ -957,6 +957,7 @@ public class dbGuiV2 extends javax.swing.JFrame {
             teams = removeDups.toArray(new String[] {});
 
             Q3Box.setModel(new javax.swing.DefaultComboBoxModel<>(teams));
+            /* Finish setting up the question 3 input box */
         }
     }
 
