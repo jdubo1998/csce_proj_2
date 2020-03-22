@@ -77,6 +77,39 @@ public class dbGuiV2 extends javax.swing.JFrame {
             "1st down penalty", "time of possession", "penalty", "penalty yard", "third down att", "third down conv",
             "fourth down att", "fourth down conv", "red zone att", "red zone td", "red zone field goal", "season",
             "row number" };
+    String[] teamNames = {"Abilene Christian","Air Force","Akron","Alabama","Alabama A&M","Alabama St.","Albany (N.Y.)",
+            "Alcorn St.","Appalachian State","Arizona","Arizona State","Arkansas","Arkansas-Pine Bluff","Arkansas State",
+            "Army","Auburn","Austin Peay","Ball State","Baylor","Bethune-Cookman","Boise State","Boston College",
+            "Bowling Green","Brown","Bryant","Bucknell","Buffalo","Butler","BYU","California","Cal Poly","Campbell",
+            "Central Arkansas","Central Conn. St.","Central Michigan","Charleston So.","Chattanooga","Cincinnati","Citadel",
+            "Clemson","Coastal Carolina","Colgate","Colorado","Colorado State","Columbia","Connecticut","Cornell",
+            "Dartmouth","Davidson","Dayton","Delaware","Delaware State","Drake","Duke","Duquesne","East Carolina",
+            "Eastern Illinois","Eastern Kentucky","Eastern Michigan","Eastern Washington","Elon","Florida","Florida A&M",
+            "Florida Atlantic","Florida International","Florida State","Fordham","Fresno State","Furman","Gardner-Webb",
+            "Georgetown","Georgia","Georgia Southern","Georgia State","Georgia Tech","Grambling","Hampton","Harvard",
+            "Hawai'i","Holy Cross","Houston","Howard","Idaho","Idaho State","Illinois","Illinois State","Indiana",
+            "Indiana State","Iowa","Iowa State","Jackson State","Jacksonville","Jacksonville State","James Madison",
+            "Kansas","Kansas State","Kent State","Kentucky","Lafayette","Lamar","Lehigh","Liberty","Louisiana-Lafayette",
+            "Louisiana-Monroe","Louisiana Tech","Louisville","LSU","Maine","Marist","Marshall","Maryland","Massachusetts",
+            "McNeese State","Memphis","Miami (Florida)","Miami (Ohio)","Michigan","Michigan State","Middle Tennessee",
+            "Minnesota","Mississippi","Mississippi State","Mississippi Valley State","Missouri","Missouri State","Monmouth",
+            "Montana","Montana State","Morehead State","Morgan State","Murray State","Navy","N.C. Central","Nebraska",
+            "Nevada","New Hampshire","New Mexico","New Mexico State","Nicholls State","Norfolk State","North Carolina",
+            "North Carolina A&T","North Carolina State","North Dakota","North Dakota State","Northern Arizona","Northern Colorado",
+            "Northern Illinois","Northern Iowa","North Texas","Northwestern","Northwestern State","Notre Dame","Ohio",
+            "Ohio State","Oklahoma","Oklahoma State","Old Dominion","Oregon","Oregon State","Penn State","Pennsylvania",
+            "Pittsburgh","Portland State","Prairie View A&M","Presbyterian","Princeton","Purdue","Rhode Island","Rice","Richmond",
+            "Robert Morris","Rutgers","Sacramento State","Sacred Heart","Samford","Sam Houston State","San Diego","San Diego State",
+            "San Jose State","Savannah State","SMU","South Alabama","South Carolina","South Carolina State","South Dakota",
+            "South Dakota State","Southeastern Louisiana","Southeast Missouri State","Southern Illinois","Southern Mississippi",
+            "Southern University","Southern Utah","South Florida","Stanford","Stephen F. Austin","St. Francis (Pa.)","Stony Brook",
+            "Syracuse","TCU","Temple","Tennessee","Tennessee-Martin","Tennessee State","Tennessee Tech","Texas","Texas A&M",
+            "Texas Southern","Texas State","Texas Tech","Toledo","Towson","Troy","Tulane","Tulsa","UAB","UC Davis","UCF","UCLA",
+            "UNLV","USC","Utah","Utah State","UTEP","UTSA","Valparaiso","Vanderbilt","Villanova","Virginia","Virginia Military",
+            "Virginia Tech","Wagner","Wake Forest","Washington","Washington State","Weber State","Western Carolina","Western Illinois",
+            "Western Kentucky","Western Michigan","West Virginia","William & Mary","Wisconsin","Wofford","Wyoming","Yale","Youngstown State"
+    };
+
     // String [] commonElements;
     ArrayList<String> commonElements = new ArrayList<String>();
     String[] JoinArray;
@@ -340,7 +373,7 @@ public class dbGuiV2 extends javax.swing.JFrame {
 
         TableLabel2.setText("Victory Chain:");
 
-        Q1Box1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "conference" }));
+        Q1Box1.setModel(new javax.swing.DefaultComboBoxModel<>(teamNames));
         Q1Box1.setToolTipText("");
         Q1Box1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -350,7 +383,7 @@ public class dbGuiV2 extends javax.swing.JFrame {
 
         ColumnLabel2.setText("Team 2");
 
-        Q1Box2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "conference code", "subdivision", "name", "season" }));
+        Q1Box2.setModel(new javax.swing.DefaultComboBoxModel<>(teamNames));
         Q1Box2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Q1Box2ActionPerformed(evt);
