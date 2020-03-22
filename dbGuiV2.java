@@ -581,7 +581,7 @@ public class dbGuiV2 extends javax.swing.JFrame {
 
         TableLabel16.setText("Filter");
 
-        BonusBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "conference" }));
+        BonusBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "players", "winners" }));
         BonusBox.setToolTipText("");
         BonusBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -765,7 +765,7 @@ public class dbGuiV2 extends javax.swing.JFrame {
                 formated.format("Q4 not implemented yet");
                 break;
             case (5):
-                formated.format("Q5 not implemented yet");
+                Questions.q5(formated, conn, BonusBox.getSelectedItem().toString());
                 break;
             default:
                 System.out.println("How did you get here?");
@@ -949,7 +949,7 @@ public class dbGuiV2 extends javax.swing.JFrame {
             dbConnect conn = new dbConnect(username, password);
 
             /* Start setting up the question 3 input box */
-            String[] teams = conn.sendQuery("SELECT name FROM team", "name".split(" "));
+            String[] teams = conn.sendQuery("SELECT name FROM team", new String[] { "name" });
             teams = teams[0].split("\n");
 
             LinkedHashSet<String> removeDups = new LinkedHashSet<>(Arrays.asList(teams));

@@ -62,7 +62,7 @@ public class Questions {
 
         //get the game codes that the team played in
         query = "SELECT \"game code\" FROM game WHERE \"visit team code\" = '" + teamCode + "' OR \"home team code\" = '" + teamCode + "';";
-        data = conn.sendQuery(query, "\"game code\"".split("\n"));
+        data = conn.sendQuery(query, new String[] { "\"game code\"" });
         String[] gameCodes = data[0].split("\n");
 
         int maxYards = Integer.MIN_VALUE;
@@ -90,12 +90,12 @@ public class Questions {
 
         //get name of best team
         query = "SELECT name FROM team WHERE \"team code\" = '" + bestTeam + "';";
-        data = conn.sendQuery(query, "name".split("\n"));
+        data = conn.sendQuery(query, new String[]{ "name" });
         String teamName = data[0].split("\n")[0];
 
         //get date of game
         query = "SELECT date FROM game WHERE \"game code\" = '" + game + "';";
-        data = conn.sendQuery(query, "date".split("\n"));
+        data = conn.sendQuery(query, new String[]{ "date" });
         String date = data[0].trim();
 
         //output
@@ -104,5 +104,33 @@ public class Questions {
 
     static void q4(Formatter formated) {
 
+    }
+
+    static void q5(Formatter formated, dbConnect conn, String selection) {
+        switch(selection) {
+            case("players"):
+                String query = "SELECT count(DISTINCT \"player code\"), \"home town\" FROM player GROUP BY \"home town\";";
+                String[] data = conn.sendQuery(query, new String[] { "count(\"player code\")", "home town" });
+
+                String[] counts = data[0].split("\n");
+                String[] towns = data[1].split("\n");
+
+                int max = Integer.MIN_VALUE;
+                String town = "";
+
+                for(int i = 0; i < counts.length; i++) {
+                    if(Integer.parseInt(counts[i]) > max && !towns[i].equals("null")) {
+                        max = Integer.parseInt(counts[i]);
+                        town = towns[i];
+                    }
+                }
+
+                formated.format("There are %s players from %s.", max, town);
+
+                break;
+            case("winners"):
+                formated.format("winners not yet implemented");
+                break;
+        }
     }
 }
