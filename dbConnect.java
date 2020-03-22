@@ -61,7 +61,6 @@ public class dbConnect {
             }
         } catch (Exception e) {
             System.err.println(e.getMessage());
-            // System.err.println("Error accessing the database");
         }
 
         return data;

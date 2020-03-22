@@ -786,7 +786,8 @@ public class dbGuiV2 extends javax.swing.JFrame {
                         DefaultSeasonBox.getSelectedItem().toString());
                 break;
             case (1):
-                formated.format("Q1 not implemented yet");
+                Questions.q1(formated, conn, Q1Box1.getSelectedItem().toString(), Q1Box2.getSelectedItem().toString());
+                // DatabaseOutput.setText(Questions.q1(conn, Q1Box1.getSelectedItem().toString(), Q1Box2.getSelectedItem().toString()));
                 break;
             case (2):
                 formated.format("Q2 not implemented yet");

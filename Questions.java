@@ -47,7 +47,7 @@ public class Questions {
         }
     }
 
-    static String q1(dbConnect conn, String team1, String team2) {
+    static void q1(Formatter formated, dbConnect conn, String team1, String team2) {
         String team1code, team2code;
         String chain;
         String[] code;
@@ -58,13 +58,20 @@ public class Questions {
         code = conn.sendQuery("SELECT \"team code\" FROM team WHERE name='" + team2 + "' GROUP BY \"team code\";", new String[] {"team code"});
         team2code = code[0].replace("\n", "");
 
+        if (code[0].length() == 0) {
+            formated.format("%s", "Invalid username or password.");
+            return;
+        }
+
         chain = getTeamChain(conn, team1code, team2code, new ArrayList<String>(), true);
 
         if (chain.equals("NULL")) {
-            return team1 + " has never beaten any team, thus the chain is null.";
+            formated.format("%s has never beaten any team, thus the chain is null.", team1);
+            return;
         }
 
-        return chain;
+        formated.format("%s", chain);
+        // return chain;
     }
 
     private static String getTeamChain(dbConnect conn, String team1code, String team2code, ArrayList<String> ignore, boolean first) {
@@ -118,7 +125,7 @@ public class Questions {
                 String[] name2 = conn.sendQuery("SELECT \"name\" FROM team WHERE \"team code\"="+otherteam[i]+" GROUP BY \"name\";", new String[] {"name"});
 
                 String link = getTeamChain(conn, otherteam[i], team2code, ignore, false);
-                if (!link.equals("NULL")) {
+                if (!link.equals("NULL") && !link.equals("")) {
                     return name1[0].replace("\n", "") + " beat " + name2[0].replace("\n", "") + " " + seasons[i].replace("\n", "") 
                         + ", " + link;
                 }
