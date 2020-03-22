@@ -2,13 +2,17 @@ import java.awt.Image;
 import java.awt.Font;
 import javax.swing.ImageIcon;
 import javax.swing.text.StyledDocument;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.io.File; // Import the File class
 import java.io.FileWriter;
 import java.io.IOException; // Import the IOException class to handle errors
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Formatter;
 import java.util.Locale;
 import java.lang.StringBuilder;
+import java.util.LinkedHashSet;
 import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
 import java.io.*;
@@ -208,6 +212,12 @@ public class dbGuiV2 extends javax.swing.JFrame {
         ImageIcon logoImage = new ImageIcon("resources//teamlogo.png");
         Logo.setIcon(new ImageIcon(logoImage.getImage().getScaledInstance(163, 163, Image.SCALE_SMOOTH)));
 
+        jTabbedPane1.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                TabbedChanged(e);
+            }
+        });
+
         Table1ComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(conferenceColumns));
         Table1ComboBox1.setToolTipText("");
         Table1ComboBox1.addActionListener(new java.awt.event.ActionListener() {
@@ -245,6 +255,8 @@ public class dbGuiV2 extends javax.swing.JFrame {
         PasswordLabel.setText("Password");
 
         DatabaseOutput.setEditable(false);
+        DatabaseOutput.setFont(new Font("monospaced", Font.PLAIN, 12));
+        DatabaseOutput.setText("Please enter username and password, select options from above, and then hit submit.");
         jScrollPane1.setViewportView(DatabaseOutput);
 
         TeamNameLabel.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
@@ -602,7 +614,7 @@ public class dbGuiV2 extends javax.swing.JFrame {
 
         TableLabel16.setText("Filter");
 
-        BonusBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "conference" }));
+        BonusBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "players", "winners" }));
         BonusBox.setToolTipText("");
         BonusBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -736,8 +748,6 @@ public class dbGuiV2 extends javax.swing.JFrame {
         String[] tables = new String[2];
         String[] columns;
         String joinBy;
-        String query;
-        int season;
 
         // Username and Password holders
         String username;
@@ -748,30 +758,54 @@ public class dbGuiV2 extends javax.swing.JFrame {
         // set up a dbConnect object to talk to the database
         dbConnect conn = new dbConnect(username, password);
 
-        // set up a query to use and what columns to use
-        String[] col1 = DefaultColumnBox1.getChecked();
-        String[] col2 = DefaultColumnBox2.getChecked();
-
-        columns = new String[col1.length + col2.length];
-
-        for (int i = 0; i < col1.length; i++) {
-            columns[i] = col1[i];
-        }
-        for (int i = 0; i < col2.length; i++) {
-            columns[i + col1.length] = col2[i];
-        }
-
-        joinBy = DefaultJoinBox.getSelectedItem().toString();
-
-        tables[0] = DefaultTableBox1.getSelectedItem().toString();
-        tables[1] = DefaultTableBox2.getSelectedItem().toString();
-
         // Start formatting the output in an even way
         StringBuilder output = new StringBuilder();
         Formatter formated = new Formatter(output, Locale.US);
 
-        Questions.normal(formated, conn, tables, columns, joinBy, col1.length, 
-                DefaultSeasonBox.getSelectedItem().toString());
+        switch(jTabbedPane1.getSelectedIndex()) {
+            case (0):
+                // set up a query to use and what columns to use
+                String[] col1 = DefaultColumnBox1.getChecked();
+                String[] col2 = DefaultColumnBox2.getChecked();
+
+                columns = new String[col1.length + col2.length];
+
+                for (int i = 0; i < col1.length; i++) {
+                    columns[i] = col1[i];
+                }
+                for (int i = 0; i < col2.length; i++) {
+                    columns[i + col1.length] = col2[i];
+                }
+
+                joinBy = DefaultJoinBox.getSelectedItem().toString();
+
+                tables[0] = DefaultTableBox1.getSelectedItem().toString();
+                tables[1] = DefaultTableBox2.getSelectedItem().toString();
+
+                Questions.normal(formated, conn, tables, columns, joinBy, col1.length,
+                        DefaultSeasonBox.getSelectedItem().toString());
+                break;
+            case (1):
+                formated.format("Q1 not implemented yet");
+                break;
+            case (2):
+                formated.format("Q2 not implemented yet");
+                break;
+            case (3):
+                Questions.q3(formated, conn, Q3Box.getSelectedItem().toString());
+                break;
+            case (4):
+                formated.format("Q4 not implemented yet");
+                break;
+            case (5):
+                Questions.q5(formated, conn, BonusBox.getSelectedItem().toString());
+                break;
+            default:
+                System.out.println("How did you get here?");
+                break;
+
+
+        }
 
         formated.close();
         // end formating and output
@@ -788,7 +822,6 @@ public class dbGuiV2 extends javax.swing.JFrame {
             }
         }
 
-        DatabaseOutput.setFont(new Font("monospaced", Font.PLAIN, 12));
         DatabaseOutput.setText("");
         StyledDocument doc = DatabaseOutput.getStyledDocument();
 
@@ -934,7 +967,32 @@ public class dbGuiV2 extends javax.swing.JFrame {
 
     private void Q2TextField1ActionPerformed(java.awt.event.ActionEvent evt) {                                             
         // TODO add your handling code here:
-    }                                            
+    }
+    
+    private void TabbedChanged(ChangeEvent e) {
+        // Username and Password holders
+        String username;
+        String password;
+
+        username = UsernameTextField.getText();
+        password = String.copyValueOf(PasswordTextField.getPassword());
+        // set up a dbConnect object to talk to the database
+
+        if (!username.isEmpty()) {
+            dbConnect conn = new dbConnect(username, password);
+
+            /* Start setting up the question 3 input box */
+            String[] teams = conn.sendQuery("SELECT name FROM team", new String[] { "name" });
+            teams = teams[0].split("\n");
+
+            LinkedHashSet<String> removeDups = new LinkedHashSet<>(Arrays.asList(teams));
+
+            teams = removeDups.toArray(new String[] {});
+
+            Q3Box.setModel(new javax.swing.DefaultComboBoxModel<>(teams));
+            /* Finish setting up the question 3 input box */
+        }
+    }
 
     /**
      * @param args the command line arguments

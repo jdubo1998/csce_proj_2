@@ -35,9 +35,7 @@ public class dbConnect {
             Class.forName("org.postgresql.Driver");
             conn = DriverManager.getConnection(db, user, pswd);
         } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.exit(0);
+            System.out.println("Invalid username or password");
         }
     }
 
