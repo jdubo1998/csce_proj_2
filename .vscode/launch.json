@@ -9,6 +9,20 @@
             "name": "CodeLens (Launch) - dbGuiV2",
             "request": "launch",
             "mainClass": "dbGuiV2",
+            "projectName": "csce_proj_2_a5b51dd9"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - dbGui",
+            "request": "launch",
+            "mainClass": "dbGui",
+            "projectName": "csce_proj_2_a5b51dd9"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - dbGuiV2",
+            "request": "launch",
+            "mainClass": "dbGuiV2",
             "projectName": "csce_proj_2_e916b9f3"
         },
         {
