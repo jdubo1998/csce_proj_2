@@ -195,6 +195,8 @@ public class dbGuiV2 extends javax.swing.JFrame {
         FileCheckBox = new javax.swing.JCheckBox();
         SubmitButton = new javax.swing.JButton();
 
+        this.setTitle("College Football Statistics Database");
+
         jCheckBoxMenuItem1.setSelected(true);
         jCheckBoxMenuItem1.setText("jCheckBoxMenuItem1");
 
@@ -448,11 +450,11 @@ public class dbGuiV2 extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Q1", jPanel2);
+        jTabbedPane1.addTab("Victory Chain", jPanel2);
 
         TableLabel5.setText("Shortest Chain:");
 
-        TableLabel6.setText("A chain that is the shortest relation between Player 1 and Player 2.");
+        TableLabel6.setText("A chain that is the shortest relation between Player 1 and Player 2. (use player codes)");
 
         TableLabel7.setText("Player 1");
 
@@ -510,7 +512,7 @@ public class dbGuiV2 extends javax.swing.JFrame {
                 .addGap(17, 17, 17))
         );
 
-        jTabbedPane1.addTab("Q2", jPanel3);
+        jTabbedPane1.addTab("Shortest Chain", jPanel3);
 
         TableLabel8.setText("Rushing Yards:");
 
@@ -558,7 +560,7 @@ public class dbGuiV2 extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Q3", jPanel4);
+        jTabbedPane1.addTab("Rushing Yards", jPanel4);
 
         TableLabel11.setText("Home Field Advantage:");
 
@@ -606,7 +608,7 @@ public class dbGuiV2 extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Q4", jPanel5);
+        jTabbedPane1.addTab("Home Field Advantage", jPanel5);
 
         TableLabel14.setText("HomeTown:");
 
