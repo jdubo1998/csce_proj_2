@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.List;
 import java.util.Locale;
@@ -48,8 +49,92 @@ public class Questions {
         }
     }
 
-    static void q1(Formatter formated) {
+    static void q1(Formatter formated, dbConnect conn, String team1, String team2) {
+        String team1code, team2code;
+        String chain;
+        String[] code;
 
+        code = conn.sendQuery("SELECT \"team code\" FROM \"team\" WHERE name='" + team1 + "' GROUP BY \"team code\";", new String[] {"team code"});
+        team1code = code[0].replace("\n", "");
+
+        code = conn.sendQuery("SELECT \"team code\" FROM team WHERE name='" + team2 + "' GROUP BY \"team code\";", new String[] {"team code"});
+        team2code = code[0].replace("\n", "");
+
+        if (code[0].length() == 0) {
+            formated.format("%s", "Invalid username or password.");
+            return;
+        }
+
+        chain = getTeamChain(conn, team1code, team2code, new ArrayList<String>(), true);
+
+        if (chain.equals("NULL")) {
+            formated.format("%s has never beaten any team, thus the chain is null.", team1);
+            return;
+        }
+
+        formated.format("%s", chain);
+        // return chain;
+    }
+
+    private static String getTeamChain(dbConnect conn, String team1code, String team2code, ArrayList<String> ignore, boolean first) {
+        String[] otherteam;
+        String[] compare;
+        String[] seasons;
+        ignore.add(team1code);
+
+        String[] querryresult = conn.sendQuery("SELECT game.\"season\",htc.\"team code\",vtc.\"team code\" FROM game " +
+            "INNER JOIN team_game_statistics AS htc ON htc.\"game code\"=game.\"game code\" AND htc.\"team code\"=game.\"home team code\" " + 
+            "INNER JOIN team_game_statistics AS vtc ON vtc.\"game code\"=game.\"game code\" AND vtc.\"team code\"=game.\"visit team code\" " +
+            "WHERE " + 
+            "(htc.\"team code\"=" + team1code + " AND (htc.\"points\" > vtc.\"points\")) OR " +
+            "(vtc.\"team code\"=" + team1code + " AND (vtc.\"points\" > htc.\"points\")) ORDER BY game.\"season\";"
+            , new String[] {"season", "htc.\"team code\"", "vtc.\"team code\""});
+
+        if (querryresult[0].equals("")) {
+            return "NULL";
+        }
+
+        seasons = querryresult[0].split("\n");
+
+        otherteam = querryresult[1].split("\n");
+        compare = querryresult[2].split("\n");
+
+        /* Creates and array of each team team 1 beat in every season. */
+        for (int i = 0; i < otherteam.length; i++) {
+            if (otherteam[i].equals(team1code)) {
+                otherteam[i] = compare[i];
+            }
+        }
+
+        /* Iterates through the array of teams and sees if team 2 is one of those teams, if so returns when team 1 beat them. */
+        for (int i = 0; i < otherteam.length; i++) {
+            if (otherteam[i].equals(team2code)) {
+                String[] name1 = conn.sendQuery("SELECT \"name\" FROM team WHERE \"team code\"="+team1code+" GROUP BY \"name\";", new String[] {"name"});
+                String[] name2 = conn.sendQuery("SELECT \"name\" FROM team WHERE \"team code\"="+team2code+" GROUP BY \"name\";", new String[] {"name"});
+
+                if (first) {
+                    return name1[0].replace("\n", "") + " beat " + name2[0].replace("\n", "") + " " + seasons[i].replace("\n", "") + ".";
+                } else {
+                    return "and " + name1[0].replace("\n", "") + " beat " + name2[0].replace("\n", "") + " " + seasons[i].replace("\n", "") + ".";
+                }
+            }
+        }
+
+        /* Iterates through the array of teams and recursivly calls this function again, accept team1 is the next team. Doesn't call duplicate teams. */
+        for (int i = 0; i < otherteam.length; i++) {
+            if (!ignore.contains(otherteam[i])) {
+                String[] name1 = conn.sendQuery("SELECT \"name\" FROM team WHERE \"team code\"="+team1code+" GROUP BY \"name\";", new String[] {"name"});
+                String[] name2 = conn.sendQuery("SELECT \"name\" FROM team WHERE \"team code\"="+otherteam[i]+" GROUP BY \"name\";", new String[] {"name"});
+
+                String link = getTeamChain(conn, otherteam[i], team2code, ignore, false);
+                if (!link.equals("NULL") && !link.equals("")) {
+                    return name1[0].replace("\n", "") + " beat " + name2[0].replace("\n", "") + " " + seasons[i].replace("\n", "") 
+                        + ", " + link;
+                }
+            }
+        }
+
+        return "";
     }
 
     static void q2(Formatter formated, dbConnect conn, String playerOne, String playerTwo) {
