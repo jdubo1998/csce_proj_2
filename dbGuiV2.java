@@ -81,7 +81,7 @@ public class dbGuiV2 extends javax.swing.JFrame {
             "1st down penalty", "time of possession", "penalty", "penalty yard", "third down att", "third down conv",
             "fourth down att", "fourth down conv", "red zone att", "red zone td", "red zone field goal", "season",
             "row number" };
-    String[] teamNames = {"Abilene Christian","Air Force","Akron","Alabama","Alabama A&M","Alabama St.","Albany (N.Y.)",
+	String[] teamNames = {"Abilene Christian","Air Force","Akron","Alabama","Alabama A&M","Alabama St.","Albany (N.Y.)",
             "Alcorn St.","Appalachian State","Arizona","Arizona State","Arkansas","Arkansas-Pine Bluff","Arkansas State",
             "Army","Auburn","Austin Peay","Ball State","Baylor","Bethune-Cookman","Boise State","Boston College",
             "Bowling Green","Brown","Bryant","Bucknell","Buffalo","Butler","BYU","California","Cal Poly","Campbell",
@@ -113,7 +113,7 @@ public class dbGuiV2 extends javax.swing.JFrame {
             "Virginia Tech","Wagner","Wake Forest","Washington","Washington State","Weber State","Western Carolina","Western Illinois",
             "Western Kentucky","Western Michigan","West Virginia","William & Mary","Wisconsin","Wofford","Wyoming","Yale","Youngstown State"
     };
-
+	
     // String [] commonElements;
     ArrayList<String> commonElements = new ArrayList<String>();
     String[] JoinArray;
@@ -614,7 +614,7 @@ public class dbGuiV2 extends javax.swing.JFrame {
 
         TableLabel16.setText("Filter");
 
-        BonusBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "players", "winners" }));
+        BonusBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "players", "quarterbacks" }));
         BonusBox.setToolTipText("");
         BonusBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -748,6 +748,10 @@ public class dbGuiV2 extends javax.swing.JFrame {
         String[] tables = new String[2];
         String[] columns;
         String joinBy;
+        String query;
+        int season;
+        String playerOne;
+        String playerTwo;
 
         // Username and Password holders
         String username;
@@ -787,10 +791,12 @@ public class dbGuiV2 extends javax.swing.JFrame {
                 break;
             case (1):
                 Questions.q1(formated, conn, Q1Box1.getSelectedItem().toString(), Q1Box2.getSelectedItem().toString());
-                // DatabaseOutput.setText(Questions.q1(conn, Q1Box1.getSelectedItem().toString(), Q1Box2.getSelectedItem().toString()));
                 break;
             case (2):
-                formated.format("Q2 not implemented yet");
+                playerOne = Q2TextField1.getText();
+                playerTwo = Q2TextField2.getText();
+                Questions.q2(formated, conn, playerOne, playerTwo);
+                //formated.format("Q2 not implemented yet");
                 break;
             case (3):
                 Questions.q3(formated, conn, Q3Box.getSelectedItem().toString());
@@ -799,6 +805,7 @@ public class dbGuiV2 extends javax.swing.JFrame {
                 formated.format("Q4 not implemented yet");
                 break;
             case (5):
+                //formated.format("Q5 not implemented yet");
                 Questions.q5(formated, conn, BonusBox.getSelectedItem().toString());
                 break;
             default:

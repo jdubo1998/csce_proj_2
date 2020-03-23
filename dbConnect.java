@@ -1,4 +1,6 @@
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class that is used to be able to connect to a preset psql server
@@ -55,7 +57,7 @@ public class dbConnect {
             Statement stmt = conn.createStatement();
             ResultSet result = stmt.executeQuery(query);
             while (result.next()) {
-                for (int i = 0; i < columns.length; i++) {              
+                for (int i = 0; i < columns.length; i++) {      
                     data[i] += result.getString(i+1) + "\n";
                 }
             }
@@ -116,5 +118,105 @@ public class dbConnect {
         }
 
         return query;
+    }
+
+    String Q2MakeQuery (String playerOne, String playerTwo, String[] tables, String[] columns) {
+        String query;
+        if (tables[0].equals("null")) {
+            query = "SELECT DISTINCT (player_game_statistics.\"game code\"), player_game_statistics.\"player code\", player_game_statistics.season, away.name, home.name\n";
+            query += "from player_game_statistics\n";
+            query += "JOIN game on player_game_statistics.\"game code\"=game.\"game code\"\n";
+            query += "JOIN team AS away on game.\"visit team code\"=away.\"team code\"\n";
+            query += "JOIN team AS home on game.\"home team code\"=home.\"team code\"\n";
+            query += "where player_game_statistics.\"player code\"= '" + playerOne + "'\n";
+            query += "OR player_game_statistics.\"player code\"= '" + playerTwo + "'\n";
+            query += "ORDER BY player_game_statistics.\"player code\" ASC;";
+        }
+        
+        else {
+            query = "SELECT DISTINCT ON (player.\"player code\") player.\"player code\",\n";
+
+            //add all the columns to use
+            int i = 0;
+            for(i = 1; i < columns.length; i++) {
+                if (i == columns.length - 1) {
+                    query +=  tables[1] + "." + "\"" + columns[i] + "\"\n"; 
+                }
+                else {
+                    query +=  tables[0] + "." + "\"" + columns[i] + "\", "; 
+                }
+            }
+            // start adding tables
+            query += "FROM " + tables[0] + "\n";
+
+            if(!tables[1].equals("null")) {
+                query += "JOIN " + tables[1] + " ON " + tables[0] + "." + "\"team code\" = " + tables[1] + "." + "\"team code\" \n";
+            }
+
+            // Adding player names to the query
+            query += "WHERE player.\"player code\" = '" + playerOne + "'\n";
+            query += "OR player.\"player code\" = '" + playerTwo + "'\n";
+            query += "AND player.\"home town\" IS NOT NULL;";
+        }
+
+
+        return query;
+    }
+
+    // Sends the query and stores the data in a 2D Array
+	String[][] Q2sendQuery(String Q2query, String[] Q2Columns) {
+        if (Q2Columns[0].equals("null")) {
+            try {
+                Statement stmt = conn.createStatement();
+                ResultSet result = stmt.executeQuery(Q2query);
+                
+                /*https://stackoverflow.com/questions/24547406/resultset-into-2d-array/245479098*/
+                int nCol = result.getMetaData().getColumnCount();
+                List<String[]> table = new ArrayList<String[]>();
+                while( result.next()) {
+                    String[] row = new String[nCol];
+                    for( int iCol = 1; iCol <= nCol; iCol++ ){
+                            Object obj = result.getObject( iCol );
+                            row[iCol-1] = (obj == null) ?null:obj.toString();
+                    }
+                    table.add( row );
+                }
+                String[][] data = new String[table.size()][];
+                data = table.toArray(data);
+
+                return data;
+                
+            } 
+            catch (Exception e) {
+                System.err.println("Error accessing the database");
+            }
+            return null;
+        }
+        else {
+            String[][] data = new String[2][Q2Columns.length];
+            int row = 0, i = 0, j = 0;
+
+            for (i = 0; i < 2; i++) {
+                for (j = 0; j < Q2Columns.length; j++) {
+                    data[i][j] = "";
+                }
+            }
+
+            try {
+                Statement stmt = conn.createStatement();
+                ResultSet result = stmt.executeQuery(Q2query);
+                while (result.next()) {
+                    for (i = 0; i < Q2Columns.length; i++) {      
+                        data[row][i] += result.getString(i+1);
+                    }
+                    row++;
+                }
+            } catch (Exception e) {
+                System.err.println("Error accessing the database");
+            }
+            
+
+            return data;
+        }
     }
 }
