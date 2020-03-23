@@ -566,7 +566,7 @@ public class dbGuiV2 extends javax.swing.JFrame {
 
         TableLabel13.setText("Conference");
 
-        Q4Box.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "conference" }));
+        Q4Box.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Colonial", "Independent", "Patriot", "Atlantic Coast Conference", "Atlantic 10", "MVFC", "Gateway", "Northeast", "Western Athletic Conference", "Sun Belt Conference", "OVC", "Ivy", "Gateway Football Conference", "Conference USA", "Mountain West Conference", "Big South", "Big Sky", "Metro Atlantic", "Ind", "Pac-12 Conference", "Pacific-10 Conference", "Southland", "Southeastern Conference", "Southwestern", "American Athletic Conference", "Mid-American Conference", "Big 12 Conference", "Southern", "Mountain West", "Mid-Eastern", "Big East Conference", "Sun Belt", "Ohio Valley", "Big Ten Conference", "Pioneer", "Pioneer Football League" }));
         Q4Box.setToolTipText("");
         Q4Box.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -802,7 +802,7 @@ public class dbGuiV2 extends javax.swing.JFrame {
                 Questions.q3(formated, conn, Q3Box.getSelectedItem().toString());
                 break;
             case (4):
-                formated.format("Q4 not implemented yet");
+                Questions.q4(formated, conn, Q4Box.getSelectedItem().toString());
                 break;
             case (5):
                 //formated.format("Q5 not implemented yet");

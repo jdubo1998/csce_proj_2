@@ -4,6 +4,16 @@ import java.util.Formatter;
 import java.util.List;
 import java.util.Locale;
 import java.util.LinkedHashSet;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Comparator;
+import java.util.Collections;
+import java.util.Vector;
+import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map.Entry;
 import java.lang.StringBuilder;
 
 public class Questions {
@@ -262,7 +272,129 @@ public class Questions {
         formated.format("%s had %s rushing yards against %s during the game on %s.\n", teamName, maxYards, team, date);
     }
 
-    static void q4(Formatter formated) {
+    static void q4(Formatter formated, dbConnect conn, String conference) {
+        //find the conference code given the string
+        String query = "SELECT DISTINCT \"conference code\" FROM conference WHERE conference.name = '" + conference + "';";
+        String[] data = conn.sendQuery(query, new String[]{ "conference code" });
+        String conference_code = data[0].split("\n")[0];
+        // System.out.print(conference_code);
+
+        //find all the teams codes in the conference
+        query = "SELECT DISTINCT \"team code\" FROM team WHERE team.\"conference code\" = '" + conference_code + "';";
+        data = conn.sendQuery(query, new String[]{ "team code" });
+        String[] conference_team_codes = data[0].split("\n");
+        // for(int n = 0; n < conference_team_codes.length; n++){
+        //     System.out.print(conference_team_codes[n]);
+        //     System.out.print("\n");
+        // }
+
+        //find all the team codes, Home and Visitor
+        query = "select distinct home_code from game2 where game2.home_conference_code = '" + conference_code + "' or game2.visitor_conference_code = '" + conference_code + "' union select distinct visitor_code from game2 where game2.visitor_conference_code = '" + conference_code + "' or game2.home_conference_code = '" + conference_code + "';";
+        data = conn.sendQuery(query, new String[]{ "team codes" });
+        String[] all_team_codes = data[0].split("\n");
+        // for(int n = 0; n < all_team_codes.length; n++){
+        //     System.out.print(all_team_codes[n]);
+        //     System.out.print("\n");
+        // }
+        // System.out.println(all_team_codes.length);
+
+        //make an overall_rating for every team in all_team_codes (maybe us a hashmap here)
+        /*
+            for every team in all_team_codes:
+                overall_rating = number_wins / number games
+        */
+        double overall_rating;
+        double number_wins, number_games;
+        Hashtable<String, Double> rating_hash = new Hashtable<String, Double>();
+        for(int n = 0; n < all_team_codes.length; n++){
+            query = "SELECT COUNT(winner) FROM game2 WHERE game2.winner = " + all_team_codes[n] + ";";
+            data = conn.sendQuery(query, new String[]{ "winner" });
+            number_wins = Double.parseDouble(data[0].split("\n")[0]);
+            
+            query = "SELECT COUNT(*) FROM game2 WHERE game2.home_code = " + all_team_codes[n] + " or game2.visitor_code = " + all_team_codes[n] + ";";
+            data = conn.sendQuery(query, new String[]{ "count" });
+            number_games = Double.parseDouble(data[0].split("\n")[0]);
+            overall_rating = number_wins / number_games;
+
+            rating_hash.put(all_team_codes[n], overall_rating);
+            // System.out.print(number_wins);
+            // System.out.print(" / ");
+            // System.out.print(number_games);
+            // System.out.print(" = ");
+            // System.out.println(overall_rating);
+        }
+        // System.out.print(rating_hash);
+        
+
+        //run algorithm for every team in the conference for every home game
+        /*
+            Sum = 0
+            for every team in the conference:
+                for every home game:
+                    if won:
+                        Sum = Sum + Opponent Overall Rating
+                    if lose:
+                        Sum = Sum - (1 - Opponent Overall Rating)
+                        //Sum = Sum - (My rating - Opponent Rating) //dont think this is going to work
+            Hashtable HomeRating(key = team_code, value = Sum / Number_Home_Games)
+        */
+        double rating = 0;
+        String[] winner_codes, visitor_codes;
+        Hashtable<String, Double> home_ratings = new Hashtable<String, Double>();
+        Vector<Integer> ratings_vector = new Vector<Integer>();
+        Vector<String> team_names = new Vector<String>();
+        for(int n = 0; n < conference_team_codes.length; n++){
+            query = "SELECT winner FROM game2 WHERE game2.home_code = " + conference_team_codes[n] + ";";
+            data = conn.sendQuery(query, new String[]{ "winner" });
+            winner_codes = data[0].split("\n"); 
+
+            query = "SELECT visitor_code FROM game2 WHERE game2.home_code = " + conference_team_codes[n] + ";";
+            data = conn.sendQuery(query, new String[]{ "visitor_code" });
+            visitor_codes = data[0].split("\n");
+           
+            for(int j = 0; j < winner_codes.length; j++){
+                if(rating_hash.containsKey(visitor_codes[j])){
+                    if(winner_codes[j] == conference_team_codes[n]){ // if won
+                        rating = rating + rating_hash.get(visitor_codes[j]);
+                    }
+                    else{ // if lost
+                        rating = rating + 1 - rating_hash.get(visitor_codes[j]);
+                    }
+                }
+            }
+
+            home_ratings.put(conference_team_codes[n], rating);
+            ratings_vector.add((int)rating);
+            rating = 0;
+            query = "SELECT DISTINCT name FROM team WHERE team.\"team code\" = " + conference_team_codes[n] + ";";
+            data = conn.sendQuery(query, new String[]{ "home_name" });
+            team_names.add(data[0].split("\n")[0]);
+        }
+
+        for(int n = 0; n < ratings_vector.size(); n++){
+            for(int j = 0; j < ratings_vector.size(); j++){
+                if(ratings_vector.elementAt(n) > ratings_vector.elementAt(j)){
+                    Collections.swap(ratings_vector, j, n);
+                    Collections.swap(team_names, j , n);
+                }
+            }
+        }
+
+        for(int n = 0; n < ratings_vector.size(); n++){
+            System.out.print(team_names.elementAt(n));
+            System.out.print(" : ");
+            System.out.println(ratings_vector.elementAt(n));
+
+        }
+        
+        //Display this information in a table in HomeRating decending order
+        // System.out.println(sorted_home_ratings);
+        String output = "Team Name : Home Rating \n";
+        for(int n = 0; n < team_names.size(); n++){
+            output = output + team_names.elementAt(n) + " : " + ratings_vector.elementAt(n) + " \n";
+        }
+
+        formated.format(output);
 
     }
 
