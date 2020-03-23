@@ -765,7 +765,8 @@ public class dbGuiV2 extends javax.swing.JFrame {
                 formated.format("Q4 not implemented yet");
                 break;
             case (5):
-                Questions.q5(formated, conn, BonusBox.getSelectedItem().toString());
+                formated.format("Q5 not implemented yet");
+                //Questions.q5(formated, conn, BonusBox.getSelectedItem().toString());
                 break;
             default:
                 System.out.println("How did you get here?");
