@@ -705,6 +705,8 @@ public class dbGuiV2 extends javax.swing.JFrame {
         String joinBy;
         String query;
         int season;
+        String playerOne;
+        String playerTwo;
 
         // Username and Password holders
         String username;
@@ -746,7 +748,10 @@ public class dbGuiV2 extends javax.swing.JFrame {
                 formated.format("Q1 not implemented yet");
                 break;
             case (2):
-                formated.format("Q2 not implemented yet");
+                playerOne = Q2TextField1.getText();
+                playerTwo = Q2TextField2.getText();
+                Questions.q2(formated, conn, playerOne, playerTwo);
+                //formated.format("Q2 not implemented yet");
                 break;
             case (3):
                 formated.format("Q3 not implemented yet");
