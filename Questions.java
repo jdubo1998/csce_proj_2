@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.List;
 import java.util.Locale;
+import java.util.LinkedHashSet;
 import java.lang.StringBuilder;
 
 public class Questions {
@@ -291,68 +292,36 @@ public class Questions {
                 formated.format("There are %s players from %s.", max, town);
 
                 break;
-            case("winners"):
-                formated.format("winners not yet implemented");
+            case("quarterbacks"):
+                query = "SELECT position, \"home town\" FROM player;";
+                data = conn.sendQuery(query, new String[] { "position", "home town" });
+                
+                String[] pos = data[0].split("\n");
+                towns = data[1].split("\n");
 
-                //get all the towns
-                query = "SELECT DISTINCT \"home town\" FROM player;";
-                data = conn.sendQuery(query, new String[]{ "\"home town\"" });
-                towns = data[0].split("\n");
+                LinkedHashSet<String> removeDups = new LinkedHashSet<>(Arrays.asList(towns));
 
-                //set up the winners array
-                int[] winners = new int[towns.length];
+                String[] uniqueTowns = removeDups.toArray(new String[] {});
+                int[] count = new int[uniqueTowns.length];
 
-                query = "SELECT \"game code\", max(\"play number\"), \"offense team code\", \"defense team code\", max(\"offense points\"), max(\"defense points\"), season FROM play GROUP BY \"game code\", \"offense team code\", \"defense team code\", season;";
-                String[] columns = { "game code", "max(\"play number\")", "offense team code", "defense team code", "max(\"offense points\")", "max(\"defense points\")", "season" };
-
-                data = conn.sendQuery(query, columns);
-
-                // split the data into a more usable format
-                String[][] splitData = new String[columns.length][];
-
-                for (int i = 0; i < columns.length; i++) {
-                    splitData[i] = data[i].split("\n");
-                }
-
-                String[] winningTeams = new String[splitData[0].length/2];
-                String[] seasons = new String[splitData[0].length/2];
-
-                for(int i = 1; i < splitData[0].length; i = i+2) {
-                    if(Integer.parseInt(splitData[4][i]) > Integer.parseInt(splitData[5][i])) {
-                        winningTeams[(int) Math.floor(i/2)] = splitData[2][i];
-                    }
-                    else {
-                        winningTeams[(int) Math.floor(i / 2)] = splitData[3][i];
-                    }
-                    seasons[(int) Math.floor(i/2)] = splitData[6][i];
-                }
-
-                for(int i = 0; i < winningTeams.length; i++) {
-                    query = "SELECT \"home town\" FROM player WHERE \"team code\" = '" + winningTeams[i] + "' AND season = '" + seasons[i] + "';";
-                    data = conn.sendQuery(query, new String[] { "home town" });
-                    System.out.println("sent home town query");
-
-                    String[] teamTowns = data[0].split("\n");
-
-                    for (int j = 0; j < towns.length; j++) {
-                        if(Arrays.asList(teamTowns).contains(towns[i]) && !towns[i].equals("null")) {
-                            winners[i]++;
-                            System.out.println("added to winners");
+                for(int i = 0; i < towns.length; i++) {
+                    if(pos[i].equals("QB") && !towns[i].equals("null")) {
+                        for(int j = 0; j < uniqueTowns.length; j++) {
+                            if(towns[i].equals(uniqueTowns[j])) {
+                                count[j]++;
+                            }
                         }
                     }
                 }
 
-                int maxWinners = Integer.MIN_VALUE;
-                int idx = 0;
-
-                System.out.println("finding max winners");
-                for(idx = 0; idx < winners.length; idx++) {
-                    if(winners[idx] > maxWinners) {
-                        maxWinners = winners[idx];
+                int maxIdx = 0;
+                for(int i = 0; i < count.length; i++) {
+                    if(count[i] > count[maxIdx]) {
+                        maxIdx = i;
                     }
                 }
 
-                formated.format("Players from %s have won %s games.", towns[idx], maxWinners);
+                formated.format("There are %s quarterbacks from %s.", count[maxIdx], uniqueTowns[maxIdx]);
 
                 break;
         }

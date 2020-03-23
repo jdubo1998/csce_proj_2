@@ -614,7 +614,7 @@ public class dbGuiV2 extends javax.swing.JFrame {
 
         TableLabel16.setText("Filter");
 
-        BonusBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "players", "winners" }));
+        BonusBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "players", "quarterbacks" }));
         BonusBox.setToolTipText("");
         BonusBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -805,8 +805,8 @@ public class dbGuiV2 extends javax.swing.JFrame {
                 formated.format("Q4 not implemented yet");
                 break;
             case (5):
-                formated.format("Q5 not implemented yet");
-                //Questions.q5(formated, conn, BonusBox.getSelectedItem().toString());
+                //formated.format("Q5 not implemented yet");
+                Questions.q5(formated, conn, BonusBox.getSelectedItem().toString());
                 break;
             default:
                 System.out.println("How did you get here?");
